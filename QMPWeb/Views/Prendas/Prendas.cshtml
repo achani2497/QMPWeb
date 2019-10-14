@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Prendas";
+}
+
+<!-- PAGE CONTENT -->
+    <div class="container-fluid">
+
+        <button class="btn bg-default box-shadow letra-20 letra-de-titulo mt-4" data-toggle="modal" data-target="#nuevaPrendaForm">
+            <i class="fas fa-plus"></i> Agregar nueva prenda
+        </button>
+
+        <div class="row">
+
+            <!-- ESTA ES LA CARD QUE TENEMOS QUE LOOPEAR -->
+            <div class="col-md-6 col-sm-6 col-lg-4 mt-4">
+                <div class="card box-shadow black-card">
+                    <div class="card-header">
+                        <h1 class="letra-de-titulo">#Prenda - #Color</h1>
+                    </div>
+                    <div class="card-body mx-auto">
+                        <h1>Aca tengo que poner la descripcion de la prenda, o sea, sus atributos</h1>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-danger btn-block"><i class="far fa-trash-alt"></i> Eliminar prenda</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- FORMULARIO DE CREACION DE PRENDA -->
+        <div class="modal fade" id="nuevaPrendaForm" role="dialog" tabindex="-1" aria-labelledby="nuevaPrendaForm" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-default">
+                    <form action="#" method="#">
+                        <div class="modal-header">
+                            <h1 class="letra-blanca letra-con-sombra letra-de-titulo">Agrega una nueva prenda</h1>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>        
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="letra-de-titulo">Qué prenda es</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Color principal</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Color secundario</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Tipo de tela</label>
+                                <select class="custom-select">
+                                    <option selected>Seleccioná el tipo de tela</option>
+                                    <option value="1">TipoTela1</option>
+                                    <option value="2">TipoTela2</option>
+                                    <option value="3">TipoTela3</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Guardarropas en el que lo queres guardar</label>
+                                <select class="custom-select">
+                                    <option selected>Seleccioná tu guardarropas</option>
+                                    <option value="1">Guardarropas1</option>
+                                    <option value="2">Guardarropas2</option>
+                                    <option value="3">Guardarropas3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success btn-block mt-1"><i class="far fa-save"></i> Crear prenda</button>
+                            <button class="btn btn-danger m-2 btn-block" data-dismiss="modal"><i class="far fa-trash-alt"></i> Descartar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>

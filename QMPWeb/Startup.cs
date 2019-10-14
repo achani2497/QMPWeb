@@ -51,6 +51,18 @@ namespace QMPWeb
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "Eventos",
+                    pattern: "{controller=Eventos}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "Guardarropas",
+                    pattern: "{controller=Guardarropas}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "Prendas",
+                    pattern: "{controller=Prendas}/{action=Index}/{id?}");
             });
         }
     }
