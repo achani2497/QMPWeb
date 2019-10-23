@@ -1,6 +1,4 @@
-﻿@{
-    Layout = null;
-}
+﻿@using QueMePongo;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,6 +53,17 @@
         <div class="container text-center">
             <h1 class="letra-con-sombra letra-de-titulo">
                 Titulo
+                @{
+                    Usuario usuario;
+
+                    Layout = null;
+                    if (ViewData.ContainsKey("usuario"))
+                    {
+                        usuario = (Usuario)ViewData["usuario"];
+                    }
+
+                    <p>usuario.usuario</p>
+                }
             </h1>
             <h3 class="letra-con-sombra letra-de-titulo">
                 Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. 

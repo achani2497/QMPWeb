@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QueMePongo;
 
 namespace QMPWeb
 {
@@ -24,9 +26,10 @@ namespace QMPWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IConfiguration>(Configuration);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -63,6 +66,10 @@ namespace QMPWeb
                 endpoints.MapControllerRoute(
                     name: "Prendas",
                     pattern: "{controller=Prendas}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name:"Login",
+                    pattern: "{controller=Login}/{action=Index}");
             });
         }
     }
