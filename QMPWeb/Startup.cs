@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QueMePongo;
@@ -26,7 +28,8 @@ namespace QMPWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddSingleton<IConfiguration>(Configuration);
+            //services.AddEntityFrameworkNpgsql().AddDbContext<DbContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("heroku")));
+            services.AddDbContext<DbContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("heroku")));
         }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

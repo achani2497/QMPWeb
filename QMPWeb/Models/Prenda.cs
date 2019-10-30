@@ -35,10 +35,13 @@ namespace QueMePongo
 
         public List<Evento> eventos = new List<Evento>();
 
+        [NotMapped]
         public virtual ICollection<Guardarropa> Guardarropas { get; set; }
 
+        [NotMapped]
         public virtual ICollection<TipoPrenda> TiposPrendas { get; set; }
 
+        [NotMapped]
         public virtual ICollection<Atuendo> Atuendos { get; set; }
 
         public Prenda() { }

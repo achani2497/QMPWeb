@@ -33,7 +33,7 @@ namespace QueMePongo
 
         public List<Evento> eventos = new List<Evento>();
 
-        public virtual ICollection<Guardarropa> Guardarropas { get; set; }
+        // public virtual [NotMapped]<Guardarropa> Guardarropas { get; set; }
 
         [NotMapped]
         public TipoUsuario tipoUsuario { get; set; }

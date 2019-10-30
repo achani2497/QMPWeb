@@ -25,8 +25,10 @@ namespace QueMePongo
         [NotMapped]
         public Usuario dueño { get; set; }
 
+        [NotMapped]
         public virtual ICollection<Usuario> Usuarios { get; set; }
 
+        [NotMapped]
         public virtual ICollection<Prenda> Prendas { get; set; }
 
         public List<Prenda> prendas = new List<Prenda>();

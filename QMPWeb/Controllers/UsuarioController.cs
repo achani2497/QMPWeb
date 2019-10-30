@@ -12,6 +12,8 @@ namespace QMPWeb.Controllers
     public class UsuarioController : Controller
     {
 
+        private readonly IConfiguration config;
+
         // GET: /<controller>/
         public IActionResult Index()
         {
@@ -19,11 +21,11 @@ namespace QMPWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromForm] JsonUsuario jsonUsuario)
+        public IActionResult Create(Usuario user)
         {
             var helper = new Helper();
 
-            helper.crearUsuario(jsonUsuario.nombreUsuario, jsonUsuario.contrasenia);
+            helper.crearUsuario(user.usuario, user.contrasenia);
 
             return RedirectToAction("Index", "Home");
 
