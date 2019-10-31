@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using QueMePongo;
 using queMePongo.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace QMPWeb.Controllers
 {
@@ -21,20 +22,14 @@ namespace QMPWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Usuario user)
+        public IActionResult Create(IFormCollection form)
         {
             var helper = new Helper();
 
-            helper.crearUsuario(user.usuario, user.contrasenia);
+            helper.crearUsuario(form["usuario"], form["contrasenia"]);
 
             return RedirectToAction("Index", "Home");
 
-        }
-
-        public class JsonUsuario
-        {
-            public string nombreUsuario { get; set; }
-            public string contrasenia { get; set; }
         }
 
     }

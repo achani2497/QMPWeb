@@ -77,7 +77,6 @@ namespace QueMePongo
             Usuario value = new Usuario(nombre, gratuito, contrasenia);
             usr.Insert(value, context);
             usuarios.Add(value);
-            Console.WriteLine("Usuario creado");
             return value;
         }
 
