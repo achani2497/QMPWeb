@@ -9,7 +9,7 @@ namespace queMePongo.Repositories
     public class guardarropaXusuarioRepository
     {
         [Key]
-        [Column("guardarropaXusuario_id")]
+        [Column("guardarropaxusuario_id")]
         public int guardarropaXusuario_id { get; set; }
 
         [Column("id_usuario")]
@@ -17,6 +17,10 @@ namespace queMePongo.Repositories
 
         [Column("id_guardarropa")]
         public int id_guardarropa { get; set; }
+
+        [Column("nombreguardarropa")]
+        public string nombreGuardarropa {get; set;}
         public guardarropaXusuarioRepository() { }
+
     }
 }

@@ -11,22 +11,33 @@
 
         <div class="row">
 
-            <!-- ESTA ES LA CARD QUE TENEMOS QUE LOOPEAR -->
-            <div class="col-md-6 col-sm-6 col-lg-3 mt-4">
-                <div class="card box-shadow black-card">
-                    <div class="card-header">
-                        <h1 class="letra-de-titulo">#Nombre</h1>
+            @if(Enumerable.Count(ViewBag.Guardarropas) > 0){
+                foreach(var guardarropa in ViewBag.Guardarropas)
+                {
+                    <div class="col-md-6 col-sm-6 col-lg-3 mt-4">
+                        <div class="card box-shadow black-card">
+                            <div class="card-header">
+                                <h1 class="letra-de-titulo">@guardarropa.nombreGuardarropa</h1>
+                            </div>
+                            <div class="card-body mx-auto">
+                                <img src="~/media/guardarropa.png" class="img-fluid icono-de-guardarropa">
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-warning btn-block letra-de-titulo" data-toggle="modal" data-target="#prendasModal"><i class="far fa-eye"></i> Ver prendas</button>
+                                <button class="btn btn-light btn-block letra-de-titulo" data-toggle="modal" data-target="#guardarropaShare"><i class="fas fa-user-plus"></i> Compartir guardarropa</button>
+                                <a asp-controller="Guardarropas" asp-action="eliminarGuardarropa" asp-route-idGuardarropa="@guardarropa.id_guardarropa" asp-route-idUsuario="@ViewBag.Id " class="btn btn-danger btn-block letra-de-titulo"><i class="far fa-trash-alt"></i> Eliminar guardarropa</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body mx-auto">
-                        <img src="~/media/guardarropa.png" class="img-fluid icono-de-guardarropa">
-                    </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-warning btn-block letra-de-titulo" data-toggle="modal" data-target="#prendasModal"><i class="far fa-eye"></i> Ver prendas</button>
-                        <button class="btn btn-light btn-block letra-de-titulo" data-toggle="modal" data-target="#guardarropaShare"><i class="fas fa-user-plus"></i> Compartir guardarropa</button>
-                        <button class="btn btn-danger btn-block letra-de-titulo"><i class="far fa-trash-alt"></i> Eliminar guardarropa</button>
-                    </div>
-                </div>
+                }
+            }
+            else
+            {
+
+            <div class="col-lg-12">
+                <div class='alert alert-danger mt-3 text-center'> <b>Todavia no tenes ningun guardarropa creado</b></div>
             </div>
+            }
 
         </div>
 
@@ -34,7 +45,8 @@
         <div class="modal fade" role="dialog" tabindex="-1" id="guardarropaForm">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content bg-default">
-                    <form action="#" method="POST">
+                    <form asp-controller="Guardarropas" asp-action="crearGuardarropa" method="POST">
+                        <input type="hidden" name="idUsuario" id="idUsuario" value="@ViewBag.Id"/>
                         <div class="modal-header">
                             <h1 class="letra-de-titulo letra-blanca letra-con-sombra">Crea un nuevo guardarropa</h1>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
@@ -46,13 +58,13 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="letra-de-titulo">Nombre del guardarropa</label>
-                                        <input type="text" class="form-control" name="nombreGuardarropa">
+                                        <input type="text" class="form-control" id="nombreGuardarropa" name="nombreGuardarropa">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                           <button type="submit" class="btn btn-success btn-block mt-2"><i class="far fa-save"></i> Crear guardarropa</button>
+                           <button id="crearGuardarropa" class="btn btn-success btn-block mt-2"><i class="far fa-save"></i> Crear guardarropa</button>
                            <button class="btn btn-danger btn-block" data-dismiss="modal"><i class="far fa-trash-alt"></i> Descartar</button>
                         </div>
                     </form>

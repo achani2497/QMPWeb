@@ -41,6 +41,14 @@
                     <div class="row" id="loginYdescripcion">                        
                         <div class="col-lg-5 col-md-7 col-sm-12 mx-auto login">
                             
+                            @{
+                                if(ViewData.ContainsKey("mensajeDeError")){
+                                    <div class="alert alert-danger mb-3 text-center">
+                                        @ViewData["mensajeDeError"]
+                                    </div>
+                                }
+                            }
+
                             <!-- FORMULARIO DE LOGIN -->
                             <div class="card" id="formLogin">
                                 <form asp-controller="Login" asp-action="login" method="POST">
@@ -55,7 +63,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                                 </div>
-                                                <input type="text" name="user" placeholder="Usuario" class="form-control">
+                                                <input type="text" name="usuario" id="usuario" placeholder="Usuario" class="form-control">
                                             </div> 
                                         </div>
                                         <div class="form-group">
@@ -63,18 +71,12 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-key"></i></span>
                                                 </div>
-                                                <input type="password" name="password" placeholder="Contraseña" class="form-control">
+                                                <input type="password" name="contrasenia" id="contrasenia" placeholder="Contraseña" class="form-control">
                                             </div>
-                                        </div>
-                                        <div class="form-check text-center fondo-sombreado">
-                                            <input type="checkbox" value="#" id="remindMe" class="form-check-input">
-                                            <label class="letra-de-titulo"> Recordarme</label>
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <!-- <input type="submit" value="Entrar" class="input btn btn-success btn-block letra-20 mb-2"> -->
-                                        <!-- <a type="button" class="btn btn-success btn-block letra-20 mb-2" href="asd">Entrar</a> -->
-                                        <a href="index.html" class="btn btn-success btn-block letra-20">Entrar</a>
+                                        <input type="submit" value="Entrar" class="input btn btn-success btn-block letra-20 mb-2">
                                     </div>
                                 </form>
                             </div>
@@ -91,7 +93,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                                 </div>
-                                                <input type="text" class="form-control" name="username" asp-for="usuario" id="username" placeholder="Nombre de Usuario">
+                                                <input type="text" class="form-control" name="usuario" asp-for="usuario" id="usuario" placeholder="Nombre de Usuario">
                                             </div>
                                         </div>
                                         <div class="form-group text-center">
@@ -99,7 +101,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-key"></i></span>
                                                 </div>
-                                                <input type="text" class="form-control" name="password" id="password" asp-for="contrasenia" placeholder="Contraseña (mínimo 8 caracteres)">
+                                                <input type="text" class="form-control" name="contrasenia" id="contrasenia" asp-for="contrasenia" placeholder="Contraseña (mínimo 8 caracteres)">
                                             </div>
                                         </div>
                                     </div>

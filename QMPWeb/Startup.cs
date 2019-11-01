@@ -28,7 +28,6 @@ namespace QMPWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //services.AddEntityFrameworkNpgsql().AddDbContext<DbContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("heroku")));
             services.AddDbContext<DbContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("heroku")));
         }
 
@@ -47,11 +46,8 @@ namespace QMPWeb
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -65,6 +61,10 @@ namespace QMPWeb
                 endpoints.MapControllerRoute(
                     name: "Guardarropas",
                     pattern: "{controller=Guardarropas}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "EliminarGuardarropas",
+                    pattern: "{controller=Guardarropas}/{action=EliminarGuardarropa}/{idGuardarropa}/{idUsuario}");
 
                 endpoints.MapControllerRoute(
                     name: "Prendas",

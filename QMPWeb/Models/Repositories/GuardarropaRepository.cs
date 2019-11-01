@@ -16,6 +16,7 @@ namespace queMePongo.Repositories
             guardarropaXusuarioRepository gur = new guardarropaXusuarioRepository();
             gur.id_guardarropa = guardarropa.id_guardarropa;
             gur.id_usuario = idUsuario;
+            gur.nombreGuardarropa = guardarropa.nombreGuardarropas;
             context.guardarropaXusuarioRepositories.Add(gur);
             context.SaveChanges();
         }

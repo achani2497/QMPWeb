@@ -1,5 +1,9 @@
 ﻿@using QueMePongo;
 
+@{
+    Layout = null;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +34,7 @@
                     <h1 class="text-center letra-de-titulo letra-con-sombra letra-blanca">Guardarropas</h1>
                     <div class="card mt-4 mx-auto box-shadow" id="img-container">
                         <div class="card-body">
-                            <a asp-controller="Guardarropas" asp-action="Index">
+                            <a asp-controller="Guardarropas" asp-action="Index" asp-route-id="@ViewBag.Id">
                                 <img src="/media/guardarropa.png" alt="" class="image-fluid imagen-de-icono">
                             </a>
                         </div>
@@ -54,22 +58,15 @@
             <h1 class="letra-con-sombra letra-de-titulo">
                 Titulo
                 @{
-                    Usuario usuario;
 
-                    Layout = null;
-                    if (ViewData.ContainsKey("usuario"))
+                    if (ViewBag.Id != null)
                     {
-                        usuario = (Usuario)ViewData["usuario"];
+                        <p>Id del usuario: @ViewBag.Id</p>
                     }
 
-                    <p>usuario.usuario</p>
                 }
             </h1>
             <h3 class="letra-con-sombra letra-de-titulo">
-                Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. 
-                Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. 
-                Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. 
-                Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. Texto de relleno. 
             </h3>          
         </div>
     </div>

@@ -66,6 +66,11 @@ namespace QueMePongo
             return telas.ToArray();
         }
 
+        public guardarropaXusuarioRepository[] consultarGuardarropaXusuario()
+        {
+            return guardarropaXusuarioRepositories.ToArray();
+        }
+
     }
 
 
