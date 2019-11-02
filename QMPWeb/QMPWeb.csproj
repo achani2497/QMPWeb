@@ -22,6 +22,7 @@
   <ItemGroup>
     <Folder Include="Models\Repositories\" />
     <Folder Include="wwwroot\media\" />
+    <Folder Include="Views\Home\" />
     <Folder Include="Views\Eventos\" />
     <Folder Include="Views\Guardarropas\" />
     <Folder Include="Views\Prendas\" />

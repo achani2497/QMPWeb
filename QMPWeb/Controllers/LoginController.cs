@@ -13,9 +13,18 @@ namespace QMPWeb.Controllers
 {
     public class LoginController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(int? error)
         {
-            return View("Login");
+
+            if(error != null){
+                DB db = new DB();
+                Error err = db.errores.FromSqlRaw($"Select * From errores Where id_error = '{error}'").FirstOrDefault();
+                ViewData.Add("mensajeDeError", err.descripcion);
+                return View("Login");
+            } else {
+                return View("Login");
+            }
+
         }
 
         [HttpPost]
@@ -28,17 +37,17 @@ namespace QMPWeb.Controllers
             Usuario user = db.usuarios.FromSqlRaw($"Select * From Usuarios Where usuario ='{nombreUsuario}'").FirstOrDefault();
 
             if(user != null && user.contrasenia == form["contrasenia"]){
-                ViewResult vista = View("~/Views/Home/Index.cshtml");
-                ViewBag.Id = user.id_usuario;
-                ViewBag.NombreUsuario = user.usuario;
+                // ViewResult vista = View("~/Views/Home/Index.cshtml");
+                // ViewBag.Id = user.id_usuario;
+                // ViewBag.NombreUsuario = user.usuario;
 
-                return vista;
+                // return vista;
+
+                return RedirectToAction("Index", "Home", new {idUsuario = user.id_usuario});
 
             } else {
-                ViewResult vista = View();
-                vista.ViewData.Add("mensajeDeError", "Usuario o Contraseña incorrectos");
-
-                return vista;
+               
+               return RedirectToAction("Index", "Login", new {error = 2});
 
             }
 

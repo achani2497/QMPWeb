@@ -72,7 +72,7 @@ namespace QMPWeb
 
                 endpoints.MapControllerRoute(
                     name:"Login",
-                    pattern: "{controller=Login}/{action=Index}");
+                    pattern: "{controller=Login}/{action=Index}/{id?}");
             });
         }
     }
