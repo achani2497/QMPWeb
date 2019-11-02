@@ -11,6 +11,16 @@
 
         <div class="row">
 
+            @{
+                if(ViewBag.ErrorDeComparticion != null){
+                    <div class="container">
+                        <div class="col-lg-12 alert alert-danger mt-4 text-center">
+                            <b> @ViewBag.ErrorDeComparticion </b>
+                        </div>
+                    </div>
+                }
+            }
+
             @if(Enumerable.Count(ViewBag.Guardarropas) > 0){
                 foreach(var guardarropa in ViewBag.Guardarropas)
                 {
@@ -33,10 +43,9 @@
             }
             else
             {
-
-            <div class="col-lg-12">
-                <div class='alert alert-danger mt-3 text-center'> <b>Todavia no tenes ningun guardarropa creado</b></div>
-            </div>
+                <div class="col-lg-12">
+                    <div class='alert alert-danger mt-3 text-center'> <b>Todavia no tenes ningun guardarropa creado</b></div>
+                </div>
             }
 
         </div>
@@ -108,7 +117,8 @@
         <div class="modal fade" role="dialog" tabindex="-1" id="guardarropaShare">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content bg-default">
-                    <form action="#" method="POST">
+                    <form asp-controller="Guardarropas" asp-action="CompartirGuardarropa" method="POST">
+                        <input type="hidden" name="idUsuarioDuenio" value="@ViewBag.Id">
                         <div class="modal-header">
                             <h1 class="letra-de-titulo letra-blanca letra-con-sombra">Compartí tu guardarropa con un amigue!</h1>
                             <button class="close" data-dismiss="modal">
@@ -118,7 +128,7 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label class="letra-de-titulo">Usuario al que le vas a compartir tu guardarropa</label>
-                                <input type="text" class="form-control" placeholder="Nombre de usuario">
+                                <input type="text" name="nombreUsuarioACompartir" class="form-control" placeholder="Nombre de usuario">
                             </div>
                         </div>
                         <div class="modal-footer">

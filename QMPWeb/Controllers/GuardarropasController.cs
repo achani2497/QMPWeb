@@ -13,7 +13,7 @@ namespace QMPWeb.Controllers
     public class GuardarropasController : Controller
     {
 
-        public IActionResult Index(int id)
+        public IActionResult Index(int id, int? error)
         {
 
             var userRepository = new UsuarioRepository();
@@ -22,6 +22,11 @@ namespace QMPWeb.Controllers
 
             List<guardarropaXusuarioRepository> guardarropasParciales = db.guardarropaXusuarioRepositories.FromSqlRaw($"Select * From guardarropaxusuario Where id_usuario = '{id}'").ToList();
             ViewBag.Guardarropas = guardarropasParciales;
+
+            if(error != null){
+                Error err = db.errores.FromSqlRaw($"Select * From errores Where id_error = '{error}'").FirstOrDefault();
+                ViewBag.ErrorDeComparticion = err.descripcion;
+            }
 
             ViewBag.Id = id;
 
@@ -64,6 +69,36 @@ namespace QMPWeb.Controllers
             }
 
             return RedirectToAction("Index", "Guardarropas", new {id = idUsuario});
+
+        }
+
+        [HttpPost]
+        public IActionResult CompartirGuardarropa(IFormCollection form){
+            DB db = new DB();
+            ViewResult vista = View("Guardarropas");
+
+            Usuario usuarioDuenio = db.usuarios.FromSqlRaw($"Select * From usuarios Where id_usuario = '{form["idUsuarioDuenio"]}'").FirstOrDefault();
+            Usuario usuarioParaCompartir = db.usuarios.FromSqlRaw($"Select * From usuarios Where usuario = '{form["nombreUsuarioACompartir"]}'").FirstOrDefault();
+            Guardarropa guardarropaOriginal = db.guardarropas.FromSqlRaw($"Select * From guardarropas Where id_duenio = '{form["idUsuarioDuenio"]}'").FirstOrDefault();
+            guardarropaXusuarioRepository gxuR = new guardarropaXusuarioRepository(); 
+
+            if(usuarioDuenio.tipoDeUsuario == usuarioParaCompartir.tipoDeUsuario || usuarioDuenio.tipoDeUsuario == 0){
+                gxuR.id_guardarropa = guardarropaOriginal.id_guardarropa;
+                gxuR.id_usuario = usuarioParaCompartir.id_usuario;
+                gxuR.nombreGuardarropa = guardarropaOriginal.nombreGuardarropas;
+
+                db.guardarropaXusuarioRepositories.Add(gxuR);
+
+                db.SaveChanges();
+
+                return RedirectToAction("Index", "Guardarropas", new {id = form["idUsuarioDuenio"]});
+
+
+            } else {
+                
+                return RedirectToAction("Index", "Guardarropas", new {id = form["idUsuarioDuenio"], error = 1});
+
+            }
 
         }
 

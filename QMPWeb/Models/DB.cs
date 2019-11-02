@@ -20,6 +20,7 @@ namespace QueMePongo
         public DbSet<Atuendo> atuendos { get; set; }
         public DbSet<TipoPrenda> tipoprendas { get; set; }
         public DbSet<Tela> telas { get; set; }
+        public DbSet<Error> errores {get; set;}
         public DbSet<guardarropaXprendaRepository> guardarropaXprendaRepositories { get; set; }
         public DbSet<guardarropaXusuarioRepository> guardarropaXusuarioRepositories { get; set; }
         public DbSet<prendaXatuendoRepository> prendaXatuendoRepositories { get; set; }
