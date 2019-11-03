@@ -15,7 +15,7 @@
 
     <ul class="nav justify-content-end bg-default nav-pills nav-fill box-shadow">
         <li class="nav-item">
-            <a class="nav-link letra-de-titulo letra-20" asp-controller="Home" asp-action="Index">Home <i class="fas fa-home"></i></a>
+            <a class="nav-link letra-de-titulo letra-20" asp-controller="Home" asp-action="Index" asp-route-idUsuario="@ViewBag.Id">Home <i class="fas fa-home"></i></a>
         </li>
         <li class="nav-item">
             <a class="nav-link letra-de-titulo letra-20" asp-controller="Guardarropas" asp-action="Index">Guardarropas <i class="fas fa-door-closed"></i></a>
@@ -27,7 +27,7 @@
             <a class="nav-link letra-de-titulo letra-20" asp-controller="Eventos" asp-action="Index">Eventos <i class="far fa-calendar-alt"></i></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link letra-de-titulo letra-20 sign-out disabled" href="login.html">Cerrar sesión <i class="fas fa-power-off"></i> </a>
+            <a class="nav-link letra-de-titulo letra-20 sign-out" asp-controller="Login" asp-action="Logout">Cerrar sesión <i class="fas fa-power-off"></i> </a>
         </li>
     </ul>
 

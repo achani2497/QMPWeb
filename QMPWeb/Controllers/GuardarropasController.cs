@@ -64,7 +64,7 @@ namespace QMPWeb.Controllers
                 db.Remove(db.guardarropaXusuarioRepositories.Single(gxu => gxu.id_guardarropa == idGuardarropa));
                 db.SaveChanges();
             } else {
-                db.Remove(db.guardarropaXusuarioRepositories.Single(gxu => gxu.id_guardarropa == idGuardarropa));
+                db.Remove(db.guardarropaXusuarioRepositories.Single(gxu => gxu.id_guardarropa == idGuardarropa && gxu.id_usuario == idUsuario));
                 db.SaveChanges();
             }
 
@@ -99,6 +99,45 @@ namespace QMPWeb.Controllers
                 return RedirectToAction("Index", "Guardarropas", new {id = form["idUsuarioDuenio"], error = 1});
 
             }
+
+        }
+        
+        [HttpPost]
+        public IActionResult EditarGuardarropa(IFormCollection form){
+
+            DB db = new DB();
+
+            Guardarropa guardarropaParaActualizar = db.guardarropas.FromSqlRaw($"Select * From guardarropas Where id_guardarropa = '{form["idGuardarropa"]}'").AsNoTracking().FirstOrDefault(); 
+            guardarropaXusuarioRepository gxuParaActualizar = db.guardarropaXusuarioRepositories.FromSqlRaw($"Select * From guardarropaxusuario Where id_guardarropa = '{form["idGuardarropa"]}'").AsNoTracking().FirstOrDefault();
+            
+            if(guardarropaParaActualizar.id_duenio == Convert.ToInt32(form["idUsuario"])){
+
+                guardarropaXusuarioRepository gxuUpdateado = new guardarropaXusuarioRepository();
+                    gxuUpdateado.guardarropaXusuario_id = gxuParaActualizar.guardarropaXusuario_id;
+                    gxuUpdateado.id_guardarropa = gxuParaActualizar.id_guardarropa;
+                    gxuUpdateado.id_usuario = gxuParaActualizar.id_usuario;
+                    gxuUpdateado.nombreGuardarropa = form["nuevoNombreGuardarropa"];
+
+                Guardarropa guardarropaUpdateado = new Guardarropa();
+                    guardarropaUpdateado.id_duenio = guardarropaParaActualizar.id_duenio;
+                    guardarropaUpdateado.id_guardarropa = guardarropaParaActualizar.id_guardarropa ;
+                    guardarropaUpdateado.nombreGuardarropas = gxuUpdateado.nombreGuardarropa;
+
+                db.guardarropas.Update(guardarropaUpdateado);
+                // db.guardarropaXusuarioRepositories.Update(gxuUpdateado);
+
+                db.Database.ExecuteSqlRaw($"update guardarropaxusuario set nombreguardarropa = '{form["nuevoNombreGuardarropa"]}' Where id_guardarropa = '{form["idGuardarropa"]}'");
+
+                db.SaveChanges();
+
+                return RedirectToAction("Index", "Guardarropas", new {id = form["idUsuario"]});
+
+            } else {
+
+                return RedirectToAction("Index", "Guardarropas", new {id = form["idUsuario"], error = 3});
+
+            }
+
 
         }
 

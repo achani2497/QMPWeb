@@ -37,11 +37,6 @@ namespace QMPWeb.Controllers
             Usuario user = db.usuarios.FromSqlRaw($"Select * From Usuarios Where usuario ='{nombreUsuario}'").FirstOrDefault();
 
             if(user != null && user.contrasenia == form["contrasenia"]){
-                // ViewResult vista = View("~/Views/Home/Index.cshtml");
-                // ViewBag.Id = user.id_usuario;
-                // ViewBag.NombreUsuario = user.usuario;
-
-                // return vista;
 
                 return RedirectToAction("Index", "Home", new {idUsuario = user.id_usuario});
 
@@ -51,6 +46,12 @@ namespace QMPWeb.Controllers
 
             }
 
+        }
+
+        public ActionResult Logout(){
+
+            return RedirectToAction("Index", "Login");
+            
         }
     }
 }

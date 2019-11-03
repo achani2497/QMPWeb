@@ -27,15 +27,16 @@
                     <div class="col-md-6 col-sm-6 col-lg-3 mt-4">
                         <div class="card box-shadow black-card">
                             <div class="card-header">
-                                <h1 class="letra-de-titulo">@guardarropa.nombreGuardarropa</h1>
+                                <h1 id="nombreGuardarropa" class="letra-de-titulo">@guardarropa.nombreGuardarropa</h1>
                             </div>
                             <div class="card-body mx-auto">
                                 <img src="~/media/guardarropa.png" class="img-fluid icono-de-guardarropa">
                             </div>
                             <div class="card-footer">
-                                <button type="button" class="btn btn-warning btn-block letra-de-titulo" data-toggle="modal" data-target="#prendasModal"><i class="far fa-eye"></i> Ver prendas</button>
-                                <button class="btn btn-light btn-block letra-de-titulo" data-toggle="modal" data-target="#guardarropaShare"><i class="fas fa-user-plus"></i> Compartir guardarropa</button>
-                                <a asp-controller="Guardarropas" asp-action="eliminarGuardarropa" asp-route-idGuardarropa="@guardarropa.id_guardarropa" asp-route-idUsuario="@ViewBag.Id " class="btn btn-danger btn-block letra-de-titulo"><i class="far fa-trash-alt"></i> Eliminar guardarropa</a>
+                                <button type="button" class="btn btn-warning btn-block btn-sm letra-de-titulo" data-toggle="modal" data-target="#prendasModal"><i class="far fa-eye"></i> Ver prendas</button>
+                                <button class="btn btn-light btn-block btn-sm letra-de-titulo" data-toggle="modal" data-target="#guardarropaShare"><i class="fas fa-user-plus"></i> Compartir guardarropa</button>
+                                <button onclick="cargarInfoGuardarropa('@guardarropa.nombreGuardarropa', '@guardarropa.id_guardarropa')" class="btn btn-primary btn-block btn-sm letra-de-titulo" data-toggle="modal" data-target="#guardarropaEdit"><i class="far fa-edit"></i> Editar guardarropa</button>
+                                <a asp-controller="Guardarropas" asp-action="eliminarGuardarropa" asp-route-idGuardarropa="@guardarropa.id_guardarropa" asp-route-idUsuario="@ViewBag.Id" class="btn btn-danger btn-block btn-sm letra-de-titulo"><i class="far fa-trash-alt"></i> Eliminar guardarropa</a>
                             </div>
                         </div>
                     </div>
@@ -120,19 +121,47 @@
                     <form asp-controller="Guardarropas" asp-action="CompartirGuardarropa" method="POST">
                         <input type="hidden" name="idUsuarioDuenio" value="@ViewBag.Id">
                         <div class="modal-header">
-                            <h1 class="letra-de-titulo letra-blanca letra-con-sombra">Compartí tu guardarropa con un amigue!</h1>
+                            <h1 class="letra-de-titulo letra-blanca letra-con-sombra">Compartí tu Guardarropa con un amigue!</h1>
                             <button class="close" data-dismiss="modal">
                                 <span>&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label class="letra-de-titulo">Usuario al que le vas a compartir tu guardarropa</label>
+                                <label class="letra-de-titulo">Usuario al que le vas a compartir tu Guardarropa</label>
                                 <input type="text" name="nombreUsuarioACompartir" class="form-control" placeholder="Nombre de usuario">
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-block btn-success"><i class="fas fa-share-alt"></i> Compartir!</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL PARA ACTUALIZAR EL NOMBRE DEL GUARDARROPAS -->
+        <div class="modal fade" role="dialog" tabindex="-1" id="guardarropaEdit">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-default">
+                    <form asp-controller="Guardarropas" asp-action="EditarGuardarropa" method="POST">
+                        <input type="hidden" name="idUsuario" value="@ViewBag.Id">
+                        <input type="hidden" name="idGuardarropa" id="idGuardarropa">
+                        <div class="modal-header">
+                            <h1 class="letra-de-titulo letra-blanca letra-con-sombra">Edición de Guardarropa</h1>
+                            <button class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="letra-de-titulo">Nombre del Guardarropa</label>
+                                <input type="text" class="form-control" name="nuevoNombreGuardarropa" id="nuevoNombreGuardarropa">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-block btn-success mt-2"><i class="far fa-save"></i> Guardar cambios</button>
+                            <button class="btn btn-block btn-danger" data-dismiss="modal"><i class="far fa-trash-alt"></i> Deshacer cambios</button>
                         </div>
                     </form>
                 </div>
