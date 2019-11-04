@@ -155,6 +155,8 @@ namespace QMPWeb.Controllers
 
                 db.SaveChanges();
 
+                TempData["SuccessMessage"] = "Modificaste el nombre del guardarropa '" + guardarropaParaActualizar.nombreGuardarropas + "' a '" + form["nuevoNombreGuardarropa"] + "' con exito :D !";
+
                 return RedirectToAction("Index", "Guardarropas", new {id = form["idUsuario"]});
 
             } else {
