@@ -41,8 +41,10 @@ namespace QMPWeb.Controllers
                 return RedirectToAction("Index", "Home", new {idUsuario = user.id_usuario});
 
             } else {
-               
-               return RedirectToAction("Index", "Login", new {error = 2});
+            
+                TempData["ErrorMessage"] = "Usuario o Contraseña incorrectos";
+
+                return RedirectToAction("Index", "Login");
 
             }
 

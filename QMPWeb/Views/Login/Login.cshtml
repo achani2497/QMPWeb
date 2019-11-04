@@ -42,9 +42,9 @@
                         <div class="col-lg-5 col-md-7 col-sm-12 mx-auto login">
                             
                             @{
-                                if(ViewData.ContainsKey("mensajeDeError")){
+                                if(TempData["ErrorMessage"] != null){
                                     <div class="alert alert-danger mb-3 text-center">
-                                        @ViewData["mensajeDeError"]
+                                        @TempData["ErrorMessage"]
                                     </div>
                                 }
                             }
