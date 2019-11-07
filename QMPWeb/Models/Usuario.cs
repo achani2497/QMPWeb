@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using queMePongo.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace QueMePongo
 {
@@ -52,67 +54,6 @@ namespace QueMePongo
         }
 
         public Usuario() { }
-
-        public Guardarropa crearGuardarropa(String nombreGuardarropa)
-        {
-            DB context = new DB();
-            GuardarropaRepository gr = new GuardarropaRepository();
-            if(gr.existeGuardarropa(nombreGuardarropa,context,id_usuario))
-            {
-                Console.WriteLine("El guardarropas ya existe");
-                return null;
-            }
-            else
-            {
-                Guardarropa value = tipoUsuario.crearGuardarropa(nombreGuardarropa, this);
-                guardarropas.Add(value);
-                gr.Insert(value, context, id_usuario);
-                Console.WriteLine("Guardarropas creado");
-                return value;
-            }
-        }
-
-        public void eliminarGuardarropa(String nombreGuardarropa)
-        {
-
-            foreach (Guardarropa a in guardarropas)
-            {
-
-                if (nombreGuardarropa == a.nombreGuardarropas)
-                {
-                    DB context = new DB();
-                    GuardarropaRepository gr = new GuardarropaRepository();
-                    gr.Delete(a.id_guardarropa, context, id_usuario);
-                    guardarropas.Remove(a);
-                    Console.WriteLine("Guardarropas eliminado");
-                    break;
-                }
-            }
-
-        }
-
-        public void compartirGuardarropa(Usuario usuario, Guardarropa guardarropaACompartir)
-        {
-            if (Object.ReferenceEquals(this.tipoUsuario.GetType(), usuario.tipoUsuario.GetType()))
-            {
-                usuario.agregarGaurdarropaCompartido(guardarropaACompartir);
-            }
-            else
-            {
-                throw new ArgumentException("los usuarios son de distinto tipo");
-            }
-        }
-
-        public void agregarGaurdarropaCompartido(Guardarropa guardarropaCompartido)
-        {
-            guardarropaCompartido.usuariosCompartidos.Add(this);
-            guardarropas.Add(guardarropaCompartido);
-            DB context = new DB();
-            guardarropaXusuarioRepository gur = new guardarropaXusuarioRepository();
-            gur.id_guardarropa = guardarropaCompartido.id_guardarropa;
-            gur.id_usuario = id_usuario;
-            context.guardarropaXusuarioRepositories.Add(gur);
-        }
 
         // public List<Atuendo> ObtenerSugerencias(Evento even)
         // {
@@ -177,6 +118,51 @@ namespace QueMePongo
                     break;
                 }
             }
+        }
+
+        public bool puedeCompartirElGuardarropa(int tipoDeUsuarioACompartir){
+            return tipoDeUsuario == tipoDeUsuarioACompartir || tipoDeUsuario == 0;
+        }
+
+        public int compartirGuardarropa(Guardarropa guardarropaOriginal, Usuario usuarioParaCompartir){
+
+            guardarropaXusuarioRepository gxuDAO = new guardarropaXusuarioRepository(); 
+            guardarropaXusuarioRepository gxuDAOParaConsulta = new guardarropaXusuarioRepository(); 
+
+            if(usuarioParaCompartir != null){//Compruebo que exista el usuario al que se quiere compartir
+                gxuDAOParaConsulta = gxuDAO.BuscarGuardarropaPorIdYIdDeUsuario(guardarropaOriginal.id_guardarropa, usuarioParaCompartir.id_usuario);
+                if(gxuDAOParaConsulta == null){//Si fuese != null significa que ya le compartio el guardarropa a ese usuario
+                    if(this.puedeCompartirElGuardarropa(usuarioParaCompartir.tipoDeUsuario)){
+
+                        // usuarioDuenio.compartirGuardarropa(guardarropaOriginal, usuarioParaCompartir.id_usuario);
+                        DB db = new DB();
+
+                        gxuDAO.id_guardarropa = guardarropaOriginal.id_guardarropa;
+                        gxuDAO.id_usuario = usuarioParaCompartir.id_usuario;
+                        gxuDAO.nombreGuardarropa = guardarropaOriginal.nombreGuardarropas;
+
+                        db.guardarropaXusuarioRepositories.Add(gxuDAO);
+
+                        db.SaveChanges();
+
+                        return 0;
+
+                    } else {
+                        
+                        return 1;
+
+                    }
+                } else {//En caso de que ya le compartió el guardarropas
+
+                    return 2;
+
+                }
+            } else { //Mensaje de error por si no existe el usuario
+
+                return 3;
+
+            }
+
         }
 
         // public void elegirAtuendo(Evento even)

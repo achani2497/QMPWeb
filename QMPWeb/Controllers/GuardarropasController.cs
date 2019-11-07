@@ -13,20 +13,13 @@ namespace QMPWeb.Controllers
     public class GuardarropasController : Controller
     {
 
-        public IActionResult Index(int id, int? error)
+        public IActionResult Index(int id)
         {
-
             var userRepository = new UsuarioRepository();
+            guardarropaXusuarioRepository guardarropaDAO = new guardarropaXusuarioRepository();
 
-            DB db = new DB();
-
-            List<guardarropaXusuarioRepository> guardarropasParciales = db.guardarropaXusuarioRepositories.FromSqlRaw($"Select * From guardarropaxusuario Where id_usuario = '{id}'").ToList();
+            List<guardarropaXusuarioRepository> guardarropasParciales = guardarropaDAO.listarGuardarropasDeUsuario(id);
             ViewBag.Guardarropas = guardarropasParciales;
-
-            if(error != null){
-                Error err = db.errores.FromSqlRaw($"Select * From errores Where id_error = '{error}'").FirstOrDefault();
-                ViewBag.ErrorDeComparticion = err.descripcion;
-            }
 
             ViewBag.Id = id;
 
@@ -45,7 +38,7 @@ namespace QMPWeb.Controllers
             guardarropa.id_duenio = idUsuario;
 
             GuardarropaRepository guardarropaRepo = new GuardarropaRepository();
-            guardarropaRepo.Insert(guardarropa, db, idUsuario);
+            guardarropaRepo.Create(guardarropa, db, idUsuario);
 
             TempData["SuccessMessage"] = "Guardarropa "+guardarropa.nombreGuardarropas+" creado con exito!";
 
@@ -56,73 +49,63 @@ namespace QMPWeb.Controllers
         public IActionResult EliminarGuardarropa(int idGuardarropa, int idUsuario)
         {
 
-            DB db = new DB();
-            
-            GuardarropaRepository guardarropaRepo = new GuardarropaRepository();
+            GuardarropaRepository guardarropaDAO = new GuardarropaRepository();
 
-            Guardarropa guardarropa = db.guardarropas.FromSqlRaw($"Select * From guardarropas Where id_guardarropa = '{idGuardarropa}'").FirstOrDefault();
+            var mensaje = guardarropaDAO.Delete(idGuardarropa, idUsuario);
 
-            if(guardarropa.id_duenio == idUsuario){//Compruebo que el que quiera eliminar sea el dueño
-
-                // UTILIZO UNA SQLRAW PORQUE SINO NI PUEDO ELIMINAR VARIOS REGISTROS DE LA TABLA guardarropaxusuario
-                db.Database.ExecuteSqlRaw($"delete from guardarropaxusuario Where id_guardarropa = '{idGuardarropa}'");
-
-            } else {
-                db.Remove(db.guardarropaXusuarioRepositories.Single(gxu => gxu.id_guardarropa == idGuardarropa && gxu.id_usuario == idUsuario));
-                db.SaveChanges();
-            }
-
-            TempData["SuccessMessage"] = "Guardarropa "+ guardarropa.nombreGuardarropas +" eliminado!";
+            TempData["SuccessMessage"] = mensaje;
             return RedirectToAction("Index", "Guardarropas", new {id = idUsuario});
 
         }
 
         [HttpPost]
         public IActionResult CompartirGuardarropa(IFormCollection form){
-            DB db = new DB();
-            ViewResult vista = View("Guardarropas");
 
-            Usuario usuarioDuenio = db.usuarios.FromSqlRaw($"Select * From usuarios Where id_usuario = '{form["idUsuarioDuenio"]}'").FirstOrDefault();
-            Usuario usuarioParaCompartir = db.usuarios.FromSqlRaw($"Select * From usuarios Where usuario = '{form["nombreUsuarioACompartir"]}'").FirstOrDefault();
-            Guardarropa guardarropaOriginal = db.guardarropas.FromSqlRaw($"Select * From guardarropas Where id_guardarropa = '{form["idGuardarropaACompartir"]}' and id_duenio = '{form["idUsuarioDuenio"]}'").FirstOrDefault();
-            guardarropaXusuarioRepository gxuR = new guardarropaXusuarioRepository(); 
-            guardarropaXusuarioRepository gxuRParaConsulta = new guardarropaXusuarioRepository(); 
+            //Hago estos pasamanos asquerosos porque no me deja parsear directamente
+            String nombreDeUsuarioACompartir = form["nombreUsuarioACompartir"];
+            String idUsuarioDuenioString = form["idUsuarioDuenio"];
+            String idGuardarropaACompartirString = form["idGuardarropaACompartir"];
+            int idUsuarioDuenio = Convert.ToInt32(idUsuarioDuenioString);
+            int idGuardarropaACompartir = Convert.ToInt32(idGuardarropaACompartirString);
 
-            if(usuarioParaCompartir != null){//Compruebo que exista el usuario
-                gxuRParaConsulta = db.guardarropaXusuarioRepositories.FromSqlRaw($"Select * from guardarropaxusuario Where id_guardarropa = '{guardarropaOriginal.id_guardarropa}' and id_usuario = '{usuarioParaCompartir.id_usuario}'").FirstOrDefault();
-                if(gxuRParaConsulta == null){//Si fuese != null significa que ya le compartio el guardarropa a ese usuario
-                    if(usuarioDuenio.tipoDeUsuario == usuarioParaCompartir.tipoDeUsuario || usuarioDuenio.tipoDeUsuario == 0){//Compruebo que el nivel de usuario deje compartir
-                        gxuR.id_guardarropa = guardarropaOriginal.id_guardarropa;
-                        gxuR.id_usuario = usuarioParaCompartir.id_usuario;
-                        gxuR.nombreGuardarropa = guardarropaOriginal.nombreGuardarropas;
+            UsuarioRepository userDAO = new UsuarioRepository();
+            GuardarropaRepository guardarropaDAO = new GuardarropaRepository();
 
-                        db.guardarropaXusuarioRepositories.Add(gxuR);
+            Usuario usuarioDuenio = userDAO.BuscarUsuarioPorId(idUsuarioDuenio);
+            Usuario usuarioParaCompartir = userDAO.BuscarUsuarioPorUsername(nombreDeUsuarioACompartir);
 
-                        db.SaveChanges();
+            Guardarropa guardarropaParaCompartir = guardarropaDAO.buscarGuardarropaPorIdYPorDuenio(idGuardarropaACompartir, idUsuarioDuenio);
+            
+            int respuesta = usuarioDuenio.compartirGuardarropa(guardarropaParaCompartir, usuarioParaCompartir);
 
-                        TempData["SuccessMessage"] = "Guardarropa compartido con "+ usuarioParaCompartir.usuario +" :D !";
+            switch(respuesta){
+                case 0:
 
-                        return RedirectToAction("Index", "Guardarropas", new {id = form["idUsuarioDuenio"]});
+                    TempData["SuccessMessage"] = "Guardarropa compartido con "+ usuarioParaCompartir.usuario +" :D !";
 
-                    } else {
-                        
-                        TempData["ErrorMessage"] = "No se puede compartir el guardarropas con el usuario " + form["nombreUsuarioACompartir"] + " porque es de un tipo de usuario inferior al tuyo!";
+                    return RedirectToAction("Index", "Guardarropas", new {id = idUsuarioDuenio});
 
-                        return RedirectToAction("Index", "Guardarropas", new {id = form["idUsuarioDuenio"]});
+                case 1:
 
-                    }
-                } else {//En caso de que ya le compartió el guardarropas
+                    TempData["ErrorMessage"] = "No se puede compartir el guardarropas con el usuario " + nombreDeUsuarioACompartir + " porque es de un tipo de usuario inferior al tuyo!";
 
-                    TempData["ErrorMessage"] = "Ya compartiste el guardarropa "+ guardarropaOriginal.nombreGuardarropas +" con el usuario " + form["nombreUsuarioACompartir"] + "!";
+                    return RedirectToAction("Index", "Guardarropas", new {id = idUsuarioDuenio});
 
-                    return RedirectToAction("Index", "Guardarropas", new {id = form["idUsuarioDuenio"]});
+                case 2:
 
-                }
-            } else { //Mensaje de error por si no existe el usuario
+                    TempData["ErrorMessage"] = "Ya compartiste el guardarropa "+ guardarropaParaCompartir.nombreGuardarropas +" con el usuario " + nombreDeUsuarioACompartir + "!";
 
-                TempData["ErrorMessage"] = "El usuario " + form["nombreUsuarioACompartir"] + " no existe!";
+                    return RedirectToAction("Index", "Guardarropas", new {id = idUsuarioDuenio});
 
-                return RedirectToAction("Index", "Guardarropas", new {id = form["idUsuarioDuenio"]});
+                case 3:
+
+                    TempData["ErrorMessage"] = "El usuario " + nombreDeUsuarioACompartir + " no existe!";
+
+                    return RedirectToAction("Index", "Guardarropas", new {id = idUsuarioDuenio});
+
+                default:
+
+                    return RedirectToAction("Index", "Login");
 
             }
 
@@ -131,42 +114,30 @@ namespace QMPWeb.Controllers
         [HttpPost]
         public IActionResult EditarGuardarropa(IFormCollection form){
 
-            DB db = new DB();
+            GuardarropaRepository guardarropaDAO = new GuardarropaRepository();
 
-            Guardarropa guardarropaParaActualizar = db.guardarropas.FromSqlRaw($"Select * From guardarropas Where id_guardarropa = '{form["idGuardarropa"]}'").AsNoTracking().FirstOrDefault(); 
-            guardarropaXusuarioRepository gxuParaActualizar = db.guardarropaXusuarioRepositories.FromSqlRaw($"Select * From guardarropaxusuario Where id_guardarropa = '{form["idGuardarropa"]}'").AsNoTracking().FirstOrDefault();
+            String idGuardarropaString = form["idGuardarropa"];
+            String idUsuarioString = form["idUsuario"];
+            int idGuardarropa = Convert.ToInt32(idGuardarropaString);
+            int idUsuario = Convert.ToInt32(idUsuarioString);
+
+            String nuevoNombreGuardarropa = form["nuevoNombreGuardarropa"];
+            String nombreViejoGuardarropa = form["nombreViejoGuardarropa"];
+
             
-            if(guardarropaParaActualizar.id_duenio == Convert.ToInt32(form["idUsuario"])){
+            if(guardarropaDAO.TryUpdate(idGuardarropa, idUsuario, nuevoNombreGuardarropa)){
 
-                guardarropaXusuarioRepository gxuUpdateado = new guardarropaXusuarioRepository();
-                    gxuUpdateado.guardarropaXusuario_id = gxuParaActualizar.guardarropaXusuario_id;
-                    gxuUpdateado.id_guardarropa = gxuParaActualizar.id_guardarropa;
-                    gxuUpdateado.id_usuario = gxuParaActualizar.id_usuario;
-                    gxuUpdateado.nombreGuardarropa = form["nuevoNombreGuardarropa"];
+                TempData["SuccessMessage"] = "Modificaste el nombre del guardarropa '" + nombreViejoGuardarropa + "' a '" + nuevoNombreGuardarropa + "' con exito :D !";
 
-                Guardarropa guardarropaUpdateado = new Guardarropa();
-                    guardarropaUpdateado.id_duenio = guardarropaParaActualizar.id_duenio;
-                    guardarropaUpdateado.id_guardarropa = guardarropaParaActualizar.id_guardarropa ;
-                    guardarropaUpdateado.nombreGuardarropas = gxuUpdateado.nombreGuardarropa;
-
-                db.guardarropas.Update(guardarropaUpdateado);
-
-                db.Database.ExecuteSqlRaw($"update guardarropaxusuario set nombreguardarropa = '{form["nuevoNombreGuardarropa"]}' Where id_guardarropa = '{form["idGuardarropa"]}'");
-
-                db.SaveChanges();
-
-                TempData["SuccessMessage"] = "Modificaste el nombre del guardarropa '" + guardarropaParaActualizar.nombreGuardarropas + "' a '" + form["nuevoNombreGuardarropa"] + "' con exito :D !";
-
-                return RedirectToAction("Index", "Guardarropas", new {id = form["idUsuario"]});
+                return RedirectToAction("Index", "Guardarropas", new {id = idUsuario});
 
             } else {
 
-                TempData["ErrorMessage"] = "No podes editar el guardarropa " + guardarropaParaActualizar.nombreGuardarropas + " porque no sos el dueño";
+                TempData["ErrorMessage"] = "No podes editar el guardarropa " + nombreViejoGuardarropa + " porque no sos el dueño";
 
-                return RedirectToAction("Index", "Guardarropas", new {id = form["idUsuario"]});
+                return RedirectToAction("Index", "Guardarropas", new {id = idUsuario});
 
             }
-
 
         }
 

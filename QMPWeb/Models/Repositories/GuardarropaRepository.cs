@@ -1,15 +1,13 @@
 ﻿using System;
 using QueMePongo;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace queMePongo.Repositories
 {
     public class GuardarropaRepository
     {
-        public void Insert(Guardarropa guardarropa, DB context, int idUsuario)
+        public void Create(Guardarropa guardarropa, DB context, int idUsuario)
         {
             context.guardarropas.Add(guardarropa);
             context.SaveChanges();
@@ -21,84 +19,67 @@ namespace queMePongo.Repositories
             context.SaveChanges();
         }
 
-        public void Update(Guardarropa guardarropa, DB context)
+        public bool TryUpdate(int idGuardarropa, int idUsuario, String nuevoNombreGuardarropa)
         {
 
+            DB db = new DB();
+
+            Guardarropa guardarropaParaActualizar = db.guardarropas.FromSqlRaw($"Select * From guardarropas Where id_guardarropa = '{idGuardarropa}'").AsNoTracking().FirstOrDefault(); 
+            guardarropaXusuarioRepository gxuParaActualizar = db.guardarropaXusuarioRepositories.FromSqlRaw($"Select * From guardarropaxusuario Where id_guardarropa = '{idGuardarropa}'").AsNoTracking().FirstOrDefault();
+
+            if(guardarropaParaActualizar.id_duenio == idUsuario){
+
+                guardarropaXusuarioRepository gxuUpdateado = new guardarropaXusuarioRepository();
+                    gxuUpdateado.guardarropaXusuario_id = gxuParaActualizar.guardarropaXusuario_id;
+                    gxuUpdateado.id_guardarropa = gxuParaActualizar.id_guardarropa;
+                    gxuUpdateado.id_usuario = gxuParaActualizar.id_usuario;
+                    gxuUpdateado.nombreGuardarropa = nuevoNombreGuardarropa;
+
+                Guardarropa guardarropaUpdateado = new Guardarropa();
+                    guardarropaUpdateado.id_duenio = guardarropaParaActualizar.id_duenio;
+                    guardarropaUpdateado.id_guardarropa = guardarropaParaActualizar.id_guardarropa ;
+                    guardarropaUpdateado.nombreGuardarropas = gxuUpdateado.nombreGuardarropa;
+
+                db.guardarropas.Update(guardarropaUpdateado);
+
+                db.Database.ExecuteSqlRaw($"update guardarropaxusuario set nombreguardarropa = '{nuevoNombreGuardarropa}' Where id_guardarropa = '{idGuardarropa}'");
+
+                db.SaveChanges();
+
+                return true;
+
+            } else {
+
+                return false;
+
+            }
         }
 
-        public bool existeGuardarropa(String nombreGuardarropa, DB context, int idUsuario)
+        public String Delete(int idGuardarropa, int idUsuario)
         {
-            List<guardarropaXusuarioRepository> gur = new List<guardarropaXusuarioRepository>();
-            gur = context.guardarropaXusuarioRepositories.Where(b => b.id_usuario == idUsuario).ToList();
-            foreach (guardarropaXusuarioRepository a in gur)
-            {
-                Guardarropa guardarrop = new Guardarropa();
-                guardarrop = context.guardarropas.Single(b => b.id_guardarropa == a.id_guardarropa);
-                if (guardarrop.nombreGuardarropas == nombreGuardarropa)
-                {
-                    return true;
-                }
+            DB db = new DB();
+            
+            GuardarropaRepository guardarropaRepo = new GuardarropaRepository();
 
-            }
-            return false;
-        }
-        public void Delete(int guardarropaId, DB context, int idUsuario)
-        {
-            Guardarropa g = new Guardarropa();
-            g = context.guardarropas.Single(b => b.id_guardarropa == guardarropaId);
-            if (g.id_duenio == idUsuario)
-            {
-                List<guardarropaXusuarioRepository> gur = new List<guardarropaXusuarioRepository>();
-                gur = context.guardarropaXusuarioRepositories.Where(u => u.id_guardarropa == guardarropaId).ToList();
-                foreach (guardarropaXusuarioRepository a in gur)
-                {
-                    context.guardarropaXusuarioRepositories.Remove(a);
-                }
-                List<guardarropaXprendaRepository> gpr = new List<guardarropaXprendaRepository>();
-                gpr = context.guardarropaXprendaRepositories.Where(u => u.id_guardarropa == guardarropaId).ToList();
-                foreach (guardarropaXprendaRepository a in gpr)
-                {
-                    context.guardarropaXprendaRepositories.Remove(a);
-                }
-                context.guardarropas.Remove(g);
-            }
-            else
-            {
-                List<guardarropaXusuarioRepository> gur = new List<guardarropaXusuarioRepository>();
-                gur = context.guardarropaXusuarioRepositories.Where(u => u.id_usuario == idUsuario).ToList();
-                foreach (guardarropaXusuarioRepository a in gur)
-                {
-                    if (a.id_guardarropa == guardarropaId)
-                    {
-                        context.guardarropaXusuarioRepositories.Remove(a);
-                        break;
-                    }
+            Guardarropa guardarropa = db.guardarropas.FromSqlRaw($"Select * From guardarropas Where id_guardarropa = '{idGuardarropa}'").FirstOrDefault();
 
-                }
+            if(guardarropa.id_duenio == idUsuario){//Compruebo que el que quiera eliminar sea el dueño
+
+                // UTILIZO UNA SQLRAW PORQUE SINO NI PUEDO ELIMINAR VARIOS REGISTROS DE LA TABLA guardarropaxusuario
+                db.Database.ExecuteSqlRaw($"delete from guardarropaxusuario Where id_guardarropa = '{idGuardarropa}'");
+
+            } else {
+                db.Remove(db.guardarropaXusuarioRepositories.Single(gxu => gxu.id_guardarropa == idGuardarropa && gxu.id_usuario == idUsuario));
+                db.SaveChanges();
             }
-            context.SaveChanges();
+
+            return "Guardarropa "+ guardarropa.nombreGuardarropas +" eliminado!";
         }
-        public Guardarropa loguing(int idGuardarropa, DB context)
-        {
-            Guardarropa g = new Guardarropa();
-            /*List<guardarropaXusuarioRepository> gur = new List<guardarropaXusuarioRepository>();
-            gur = context.guardarropaXusuarioRepositories.Where(u => u.id_guardarropa == idGuardarropa).ToList();
-            g = context.guardarropas.Single(u => u.id_guardarropa == idGuardarropa);
-            foreach (guardarropaXusuarioRepository gu in gur)
-            {
-                if (gu.id_usuario != g.id_duenio)
-                {
-                    g.usuariosCompartidos.Add(gu.id_usuario);
-                }
-            }
-            List<guardarropaXprendaRepository> gpr = new List<guardarropaXprendaRepository>();
-            gpr = context.guardarropaXprendaRepositories.Where(u => u.id_guardarropa == idGuardarropa).ToList();
-            foreach (guardarropaXprendaRepository p in gpr)
-            {
-                PrendaRepository per = new PrendaRepository();
-                g.prendas.Add(per.loguing(p.id_prenda, context));
-            }*/
-            return g;
+
+        public Guardarropa buscarGuardarropaPorIdYPorDuenio(int idGuardarropa, int idUsuarioDuenio){
+            DB db = new DB();
+            return db.guardarropas.FromSqlRaw($"Select * From guardarropas Where id_guardarropa = '{idGuardarropa}' and id_duenio = '{idUsuarioDuenio}'").FirstOrDefault();
         }
+
     }
 }

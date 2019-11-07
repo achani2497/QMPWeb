@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using queMePongo.Repositories;
 using QueMePongo;
 
 namespace QMPWeb.Controllers
@@ -14,10 +15,11 @@ namespace QMPWeb.Controllers
         public IActionResult Index(int? idUsuario)
         {
 
-            if(idUsuario != null){
+            if(idUsuario != null){ //Valida que el usuario se haya logeado, como una especie de middleware
                 DB db = new DB();
 
-                Usuario usuario = db.usuarios.FromSqlRaw($"Select * From usuarios Where id_usuario = '{idUsuario}'").FirstOrDefault();
+                UsuarioRepository userDAO = new UsuarioRepository();
+                Usuario usuario = userDAO.BuscarUsuarioPorId(idUsuario);
 
                 ViewBag.Id = usuario.id_usuario;
                 ViewBag.NombreUsuario = usuario.usuario;

@@ -1,59 +1,10 @@
-﻿/*using System;
-using QueMePongo;
-using System.Linq;
-using Microsoft.Extensions.Configuration;
-using Npgsql;
-using Dapper;
-using System.Data;
-
-namespace queMePongo.Repositories
-{
-    public class UsuarioRepository
-    {
-        private string connectionString;
-
-        public UsuarioRepository(IConfiguration configuration)
-        {
-            connectionString = configuration.GetValue<string>("DBInfo: ConnectionString");
-        }
-
-        internal IDbConnection Connection
-        {
-            get
-            {
-                return new NpgsqlConnection(connectionString);
-            }
-        }
-
-        public void Insert(Usuario usuario)
-        {
-            using(IDbConnection dbConnection = Connection)
-            {
-                dbConnection.Open();
-                dbConnection.Execute("INSERT INTO usuarios (usuario, contrasenia, tipodeusuario) VALUES (@usuario, @contrasenia, @tipoDeUsuario)", usuario);
-            }
-        }
-
-        public void Update(Usuario usuario, DB context)
-        {
-
-        }
-
-        public void Delete(int usuarioId, DB context)
-        {
-            var usuarioParaBorrar = context.usuarios.Single(u => u.id_usuario == usuarioId);
-            context.usuarios.Remove(usuarioParaBorrar);
-            context.SaveChanges();
-            Console.WriteLine($"\nUsuario {usuarioId} eliminado!");
-        }
-
-    }
-}*/
-
-using System;
+﻿using System;
 using QueMePongo;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace queMePongo.Repositories
 {
@@ -64,91 +15,23 @@ namespace queMePongo.Repositories
             context.usuarios.Add(usuario);
             context.SaveChanges();
         }
-
-        public void Update(Usuario usuario, DB context)
-        {
-            var s = context.usuarios.Single(b => b.id_usuario == usuario.id_usuario);
-            s.tipoDeUsuario = usuario.tipoDeUsuario;
-            context.SaveChanges();
-        }
-
-        public void Delete(Usuario usuario, DB context)
-        {
-            var usuarioParaBorrar = context.usuarios.Single(u => u.id_usuario == usuario.id_usuario);
-            foreach (Evento even in usuarioParaBorrar.eventos)
-            {
-                usuarioParaBorrar.eliminarEvento(even.lugar);
-            }
-            foreach (Guardarropa guar in usuarioParaBorrar.guardarropas)
-            {
-                usuarioParaBorrar.eliminarGuardarropa(guar.nombreGuardarropas);
-            }
-            context.usuarios.Remove(usuarioParaBorrar);
-            context.SaveChanges();
-        }
-
-        public void agregarGaurdarropaCompartido(int guardarropaCompartido, String usuario, DB context)
-        {
-            var user = context.usuarios.Single(u => u.usuario == usuario);
-            guardarropaXusuarioRepository gur = new guardarropaXusuarioRepository();
-            gur.id_guardarropa = guardarropaCompartido;
-            gur.id_usuario = user.id_usuario;
-            context.guardarropaXusuarioRepositories.Add(gur);
-            context.SaveChanges();
-        }
-
         public int tipoUsuario(String usuario, DB context)
         {
             var user = context.usuarios.Single(u => u.usuario == usuario);
             return user.tipoDeUsuario;
         }
 
-        public Usuario verificarLoguing(String nomusuario, String contrasenia, DB context)
-        {
-            var user = context.usuarios.Single(u => u.usuario == nomusuario);
-            if (user == null)
-            {
-                return null;
-            }
-            else
-            {
-                if (user.contrasenia == contrasenia)
-                {
-                    return user;
-                }
-                else
-                {
-                    return null;
-                }
-            }
+        public Usuario BuscarUsuarioPorId(int? id){
+            DB db = new DB();
+            return db.usuarios.FromSqlRaw($"Select * From usuarios Where id_usuario = '{id}'").FirstOrDefault();
         }
 
-        public List<Guardarropa> loguingGuardarropas(int idUser, DB context)
-        {
-            List<Guardarropa> g = new List<Guardarropa>();
-            List<guardarropaXusuarioRepository> gur = new List<guardarropaXusuarioRepository>();
-            gur = context.guardarropaXusuarioRepositories.Where(u => u.id_usuario == idUser).ToList();
-            GuardarropaRepository gr = new GuardarropaRepository();
-            foreach (guardarropaXusuarioRepository a in gur)
-            {
-                g.Add(gr.loguing(a.id_guardarropa, context));
-            }
-            return g;
+        public Usuario BuscarUsuarioPorUsername(String username){
+            DB db = new DB();
+            return db.usuarios.FromSqlRaw($"Select * From usuarios Where usuario = '{username}'").FirstOrDefault();
         }
 
-        public List<Evento> loguingEvento(int idUser, DB context)
-        {
-            List<Evento> gur = new List<Evento>();
-            gur = context.eventos.Where(u => u.id_usuario == idUser).ToList();
-            foreach (Evento a in gur)
-            {
-                if (a.id_atuendo != -1)
-                {
-                    AtuendoRepository at = new AtuendoRepository();
-                    a.atuendo = at.loguing(a.id_atuendo, context);
-                }
-            }
-            return gur;
-        }
+        
+
     }
 }

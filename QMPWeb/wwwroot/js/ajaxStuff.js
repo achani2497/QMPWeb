@@ -1,6 +1,7 @@
-﻿function cargarInfoGuardarropa(nombreGuardarropa, idGuardarropa){
+﻿function cargarInfoUpdateGuardarropa(nombreViejo, idGuardarropa){
 
-    $("#nuevoNombreGuardarropa").val(nombreGuardarropa)
+    $("#nombreViejoGuardarropa").val(nombreViejo)
+    $("#nuevoNombreGuardarropa").val(nombreViejo)
     $("#idGuardarropa").val(idGuardarropa)
 
 } 
