@@ -11,9 +11,16 @@ namespace QMPWeb.Controllers
     public class PrendasController : Controller
     {
         // GET: /<controller>/
-        public IActionResult Index()
+        public IActionResult Index(int idUsuario)
         {
-            return View("Prendas");
+            if(idUsuario != 0){
+
+                ViewBag.Id = idUsuario;
+
+                return View("Prendas");
+            } else {
+                return RedirectToAction("Index", "Login");
+            }
         }
     }
 }

@@ -24,7 +24,7 @@
                     <h1 class="text-center letra-de-titulo letra-con-sombra letra-blanca">Prendas</h1>
                     <div class="card mt-4 mx-auto box-shadow" id="img-container">
                         <div class="card-body">
-                            <a asp-controller="Prendas" asp-action="Index">
+                            <a asp-controller="Prendas" asp-action="Index" asp-route-idUsuario="@ViewBag.Id">
                                 <img src="/media/ropa.png" alt="" class="image-fluid imagen-de-icono">
                             </a>
                         </div>
@@ -34,7 +34,7 @@
                     <h1 class="text-center letra-de-titulo letra-con-sombra letra-blanca">Guardarropas</h1>
                     <div class="card mt-4 mx-auto box-shadow" id="img-container">
                         <div class="card-body">
-                            <a asp-controller="Guardarropas" asp-action="Index" asp-route-id="@ViewBag.Id">
+                            <a asp-controller="Guardarropas" asp-action="Index" asp-route-idUsuario="@ViewBag.Id">
                                 <img src="/media/guardarropa.png" alt="" class="image-fluid imagen-de-icono">
                             </a>
                         </div>
@@ -44,7 +44,7 @@
                     <h1 class="text-center letra-de-titulo letra-con-sombra letra-blanca">Eventos</h1>
                     <div class="card mt-4 mx-auto box-shadow" id="img-container">
                         <div class="card-body">
-                            <a asp-controller="Eventos" asp-action="Index">
+                            <a asp-controller="Eventos" asp-action="Index" asp-route-idUsuario="@ViewBag.Id">
                                 <img src="/media/calendario.png" alt="" class="image-fluid imagen-de-icono">
                             </a>
                         </div>
