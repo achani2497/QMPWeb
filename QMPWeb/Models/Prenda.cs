@@ -54,10 +54,6 @@ namespace QueMePongo
         [NotMapped]
         public TipoPrenda tipo;
 
-        //public Guardarropa guardarropa { get; set; }
-
-        //public Atuendo atuendo { get; set; }
-
         public Prenda(TipoPrenda tipoP, String tel, String cp, String cs)
         {
             if (cp == cs) throw new ArgumentException("el color principal no puede ser igual que el secundario");

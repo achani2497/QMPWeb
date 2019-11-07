@@ -67,6 +67,10 @@ namespace QMPWeb
                     pattern: "{controller=Guardarropas}/{action=EliminarGuardarropa}/{idGuardarropa}/{idUsuario}");
 
                 endpoints.MapControllerRoute(
+                    name: "PrendasPorGuardarropa",
+                    pattern: "{controller=Guardarropas}/{action=TraerPrendasDelGuardarropas}/{idGuardarropa}");
+
+                endpoints.MapControllerRoute(
                     name: "Prendas",
                     pattern: "{controller=Prendas}/{action=Index}/{id?}");
 

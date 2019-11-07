@@ -39,18 +39,5 @@ namespace queMePongo.Repositories
             context.atuendos.Remove(g);
             context.SaveChanges();
         }
-
-        public Atuendo loguing(int atuendoId, DB context)
-        {
-            Atuendo g = new Atuendo();
-            List<prendaXatuendoRepository> gur = new List<prendaXatuendoRepository>();
-            gur = context.prendaXatuendoRepositories.Where(u => u.id_atuendo == atuendoId).ToList();
-            foreach (prendaXatuendoRepository p in gur)
-            {
-                PrendaRepository per = new PrendaRepository();
-                g.prendas.Add(per.loguing(p.id_prenda, context));
-            }
-            return g;
-        }
     }
 }

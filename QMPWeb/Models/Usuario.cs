@@ -73,31 +73,6 @@ namespace QueMePongo
         //     return sugerencias;
         // }
 
-        public void mostrarAtuendos(List<Atuendo> atuendos)
-        {
-
-            for (int i = 0; i < atuendos.Count; i++)
-            {
-                Console.WriteLine("Sugerencia Numero: " + i);
-                Console.WriteLine("-------------------------------------------------");
-                foreach (Prenda s in atuendos[i].prendas)
-                {
-                    if (s != null)
-                    {
-                        Console.WriteLine("descripcion:" + s.tipo.descripcion);
-                        Console.WriteLine("categoria:" + s.tipo.categoria);
-                        Console.WriteLine("capa:" + s.tipo.capa);
-                        Console.WriteLine("tela:" + s.tela);
-                        Console.WriteLine("color Principal:" + s.colorPrincipal);
-                        Console.WriteLine("color Secundario:" + s.colorSecundario);
-                    }
-                    Console.WriteLine("-------------------------------------------------");
-
-                }
-                Console.WriteLine("-------------------------------------------------");
-                Console.WriteLine("");
-            }
-        }
 
         public void crearEvento(DateTime fechaIni, DateTime fechaFinP, DateTime fechaIniP, String lugar, String descripcion, int tipoEvento)
         {

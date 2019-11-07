@@ -2,6 +2,8 @@
 using QueMePongo;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 namespace queMePongo.Repositories
 {
@@ -79,6 +81,26 @@ namespace queMePongo.Repositories
         public Guardarropa buscarGuardarropaPorIdYPorDuenio(int idGuardarropa, int idUsuarioDuenio){
             DB db = new DB();
             return db.guardarropas.FromSqlRaw($"Select * From guardarropas Where id_guardarropa = '{idGuardarropa}' and id_duenio = '{idUsuarioDuenio}'").FirstOrDefault();
+        }
+
+        [HttpPost]
+        public List<Prenda> PrendasDelGuardarropas(int idGuardarropa){
+
+            DB db = new DB();
+
+            List<guardarropaXprendaRepository> guardarropaXPrendaDAO = new List<guardarropaXprendaRepository>();
+            guardarropaXPrendaDAO = db.guardarropaXprendaRepositories.Where(u => u.id_guardarropa == idGuardarropa).ToList();
+
+            List<Prenda> prendas = new List<Prenda>();
+
+            foreach (guardarropaXprendaRepository gxpDAO in guardarropaXPrendaDAO)
+            {
+                PrendaRepository prendaDAO = new PrendaRepository();
+                Prenda prenda = prendaDAO.BuscarPrendaPorId(gxpDAO.id_prenda);
+                prendas.Add(prenda);
+            }
+
+            return prendas;
         }
 
     }

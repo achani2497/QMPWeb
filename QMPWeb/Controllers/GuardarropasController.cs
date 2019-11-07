@@ -125,7 +125,7 @@ namespace QMPWeb.Controllers
             String nombreViejoGuardarropa = form["nombreViejoGuardarropa"];
 
             
-            if(guardarropaDAO.TryUpdate(idGuardarropa, idUsuario, nuevoNombreGuardarropa)){
+            if(guardarropaDAO.TryUpdate(idGuardarropa, idUsuario, nuevoNombreGuardarropa)){//Try update devuelve un true en caso de que pudo editar el guardarropa
 
                 TempData["SuccessMessage"] = "Modificaste el nombre del guardarropa '" + nombreViejoGuardarropa + "' a '" + nuevoNombreGuardarropa + "' con exito :D !";
 
@@ -141,6 +141,13 @@ namespace QMPWeb.Controllers
 
         }
 
+        [HttpPost]
+        public List<Prenda> TraerPrendasDelGuardarropa(int idGuardarropa){
+            
+            GuardarropaRepository guardarropaDAO = new GuardarropaRepository();
+
+            return guardarropaDAO.PrendasDelGuardarropas(idGuardarropa);
+        }
         public class JsonGuardarropa
         {
             public int idUsuario { get; set; }
