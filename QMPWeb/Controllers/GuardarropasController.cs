@@ -13,17 +13,21 @@ namespace QMPWeb.Controllers
     public class GuardarropasController : Controller
     {
 
-        public IActionResult Index(int id)
+        public IActionResult Index(int idUsuario)
         {
-            var userRepository = new UsuarioRepository();
-            guardarropaXusuarioRepository guardarropaDAO = new guardarropaXusuarioRepository();
+            if(idUsuario != 0){
+                var userRepository = new UsuarioRepository();
+                guardarropaXusuarioRepository guardarropaDAO = new guardarropaXusuarioRepository();
 
-            List<guardarropaXusuarioRepository> guardarropasParciales = guardarropaDAO.listarGuardarropasDeUsuario(id);
-            ViewBag.Guardarropas = guardarropasParciales;
+                List<guardarropaXusuarioRepository> guardarropasParciales = guardarropaDAO.listarGuardarropasDeUsuario(idUsuario);
+                ViewBag.Guardarropas = guardarropasParciales;
 
-            ViewBag.Id = id;
+                ViewBag.Id = idUsuario;
 
-            return View("Guardarropas");
+                return View("Guardarropas");
+            } else {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
         [HttpPost]

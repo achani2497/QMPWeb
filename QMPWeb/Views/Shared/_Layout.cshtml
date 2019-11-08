@@ -18,13 +18,13 @@
             <a class="nav-link letra-de-titulo letra-20" asp-controller="Home" asp-action="Index" asp-route-idUsuario="@ViewBag.Id">Home <i class="fas fa-home"></i></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link letra-de-titulo letra-20" asp-controller="Guardarropas" asp-action="Index">Guardarropas <i class="fas fa-door-closed"></i></a>
+            <a class="nav-link letra-de-titulo letra-20" asp-controller="Guardarropas" asp-route-idUsuario="@ViewBag.Id" asp-action="Index">Guardarropas <i class="fas fa-door-closed"></i></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link letra-de-titulo letra-20" asp-controller="Prendas" asp-action="Index">Prendas <i class="fas fa-tshirt"></i></a>
+            <a class="nav-link letra-de-titulo letra-20" asp-controller="Prendas" asp-route-idUsuario="@ViewBag.Id" asp-action="Index">Prendas <i class="fas fa-tshirt"></i></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link letra-de-titulo letra-20" asp-controller="Eventos" asp-action="Index">Eventos <i class="far fa-calendar-alt"></i></a>
+            <a class="nav-link letra-de-titulo letra-20" asp-controller="Eventos" asp-route-idUsuario="@ViewBag.Id" asp-action="Index">Eventos <i class="far fa-calendar-alt"></i></a>
         </li>
         <li class="nav-item">
             <a class="nav-link letra-de-titulo letra-20 sign-out" asp-controller="Login" asp-action="Logout">Cerrar sesión <i class="fas fa-power-off"></i> </a>

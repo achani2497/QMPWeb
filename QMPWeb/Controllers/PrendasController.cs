@@ -15,26 +15,33 @@ namespace QMPWeb.Controllers
     public class PrendasController : Controller
     {
         // GET: /<controller>/
-        public IActionResult Index(int id)
+
+        public IActionResult Index(int idUsuario)
         {
-            guardarropaXusuarioRepository guardarropaDAO = new guardarropaXusuarioRepository();
+            if(idUsuario != 0){
 
-            List<guardarropaXusuarioRepository> guardarropasParciales = guardarropaDAO.listarGuardarropasDeUsuario(id);
+                guardarropaXusuarioRepository guardarropaDAO = new guardarropaXusuarioRepository();
 
-            guardarropaXprendaRepository prendasDAO = new guardarropaXprendaRepository();
+                List<guardarropaXusuarioRepository> guardarropasParciales = guardarropaDAO.listarGuardarropasDeUsuario(idUsuario);
 
-            List<guardarropaXprendaRepository> prendasParciales = new List<guardarropaXprendaRepository>();
+                guardarropaXprendaRepository prendasDAO = new guardarropaXprendaRepository();
 
-            foreach(guardarropaXusuarioRepository guarda in guardarropasParciales)
-            {
-                prendasParciales.AddRange(prendasDAO.listarPrendasDeGuardarropa(guarda.id_guardarropa)); 
-            }
+                List<guardarropaXprendaRepository> prendasParciales = new List<guardarropaXprendaRepository>();
+
+                foreach(guardarropaXusuarioRepository guarda in guardarropasParciales)
+                {
+                    prendasParciales.AddRange(prendasDAO.listarPrendasDeGuardarropa(guarda.id_guardarropa)); 
+                }
             
-            ViewBag.Prendas = prendasParciales;
+                ViewBag.Prendas = prendasParciales;
 
-            ViewBag.Id = id;
+                ViewBag.Id = idUsuario;
 
-            return View("Prendas");
+                return View("Prendas");
+
+            } else {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
         /*
