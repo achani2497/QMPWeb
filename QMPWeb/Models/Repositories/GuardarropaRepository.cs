@@ -65,17 +65,21 @@ namespace queMePongo.Repositories
 
             Guardarropa guardarropa = db.guardarropas.FromSqlRaw($"Select * From guardarropas Where id_guardarropa = '{idGuardarropa}'").FirstOrDefault();
 
-            if(guardarropa.id_duenio == idUsuario){//Compruebo que el que quiera eliminar sea el dueño
+            String nombre = guardarropa.nombreGuardarropas;
+
+            if (guardarropa.id_duenio == idUsuario){//Compruebo que el que quiera eliminar sea el dueño
 
                 // UTILIZO UNA SQLRAW PORQUE SINO NI PUEDO ELIMINAR VARIOS REGISTROS DE LA TABLA guardarropaxusuario
                 db.Database.ExecuteSqlRaw($"delete from guardarropaxusuario Where id_guardarropa = '{idGuardarropa}'");
+
+                // TODO SE DEBE ELIMINAR EL GUARDARROPA Y SUS PRENDAS (FUNCION SQL?)
 
             } else {
                 db.Remove(db.guardarropaXusuarioRepositories.Single(gxu => gxu.id_guardarropa == idGuardarropa && gxu.id_usuario == idUsuario));
                 db.SaveChanges();
             }
 
-            return "Guardarropa "+ guardarropa.nombreGuardarropas +" eliminado!";
+            return "Guardarropa "+ nombre +" eliminado!";
         }
 
         public Guardarropa buscarGuardarropaPorIdYPorDuenio(int idGuardarropa, int idUsuarioDuenio){

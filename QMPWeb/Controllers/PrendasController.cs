@@ -67,6 +67,41 @@ namespace QMPWeb.Controllers
 
             return RedirectToAction("Index", "Prendas", new { id = idUsuario });
 
-        }*/
+        }
+        
+        public IActionResult EliminarPrenda(int idPrenda, int idUsuario)
+        {
+            DB db = new DB();
+
+            PrendaRepository prendaDAO = new PrendaRepository();
+
+            var mensaje = prendaDAO.EliminarPrenda(idPrenda, db);
+
+            TempData["SuccessMessage"] = mensaje;
+            return RedirectToAction("Index", "Prendas", new { id = idUsuario });
+
+        }
+
+        [HttpPost]
+        public IActionResult EditarPrenda(IFormCollection form)
+        {
+            DB db = new DB();
+            Prenda prenda = new Prenda();
+            PrendaRepository prendaDAO = new PrendaRepository();
+
+            //prenda.id_prenda =                                   IGUALAR ID PRENDA NUEVA A ID ANTERIOR
+            prenda.tipoPrenda = form["tipoDePrenda"];
+            prenda.colorPrincipal = form["colorPrincipal"];
+            prenda.colorSecundario = form["colorSecundario"];
+            prenda.Tela = form["TipoDeTela"];
+            prenda.Guardarropas = form["guardarropas"];
+
+            prendaDAO.EditarPrenda(prenda,db);
+
+            return RedirectToAction("Index", "Prendas", new { id = idUsuario });
+
+        }
+         */
+
     }
 }
