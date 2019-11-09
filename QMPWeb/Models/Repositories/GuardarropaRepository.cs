@@ -72,7 +72,7 @@ namespace queMePongo.Repositories
                 // UTILIZO UNA SQLRAW PORQUE SINO NI PUEDO ELIMINAR VARIOS REGISTROS DE LA TABLA guardarropaxusuario
                 db.Database.ExecuteSqlRaw($"delete from guardarropaxusuario Where id_guardarropa = '{idGuardarropa}'");
 
-                // TODO SE DEBE ELIMINAR EL GUARDARROPA Y SUS PRENDAS (FUNCION SQL?)
+                // TODO SE DEBE ELIMINAR EL GUARDARROPA, SUS ATUENDOS y GUARDARROPAX (FUNCION SQL?)
 
             } else {
                 db.Remove(db.guardarropaXusuarioRepositories.Single(gxu => gxu.id_guardarropa == idGuardarropa && gxu.id_usuario == idUsuario));

@@ -26,9 +26,10 @@
                                 <li><span>Hora:</span> 10 PM </li>
                                 <li><span>Lugar:</span> "El Fortin Pizzeria" </li>
                                 <li><span>Atuendo elegido:</span> #descripcionDelAtuendo</li>
-                                <li><span>Dirección:</span> #direccionDelEvento</li>
                             </ul>
                             <button type="button" class="btn btn-warning btn-block letra-de-titulo" data-target="#atuendos" data-toggle="modal"> <i class="fas fa-user-tie"></i> Elegir atuendo</button>
+                            <button type="button" class="btn btn-primary btn-block btn-sm letra-de-titulo" data-toggle="modal" data-target="#eventoEdit"> <i class="far fa-edit"></i> Editar evento</button>
+                            <button type="button" class="btn btn-danger btn-block btn-sm letra-de-titulo" data-target="#eventoDelete" data-toggle="modal"> <i class="far fa-trash-alt"></i> Eliminar evento</button>
                         </div>
                     </div>
                 </div>
@@ -75,6 +76,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content bg-default">
                     <form action="#" method="#">
+                        <input type="hidden" name="idUsuario" id="idUsuario" value="@ViewBag.Id" />
                         <div class="modal-header">
                             <h1 class="letra-blanca letra-con-sombra letra-de-titulo">Agrega un nuevo evento</h1>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -86,23 +88,28 @@
                                 <div class="col-md-6 col-sm-12 col-lg-12">
                                     <div class="form-group">
                                         <label>Evento:</label>
-                                        <input type="text" class="form-control" placeholder="Ej: Charla de Diseño de Sistemas">
+                                        <input type="text" class="form-control" id="despripcionEvento" placeholder="Ej: Charla de Diseño de Sistemas">
                                     </div>
                                     <div class="form-group">
-                                        <label>Fecha:</label>
-                                        <input type="date" class="form-control">
+                                        <label>Fecha y hora de inicio:</label>
+                                        <input type="datetime-local" class="form-control" id="idFechaIni">
                                     </div>
                                     <div class="form-group">
-                                        <label>Hora:</label>
-                                        <input type="time" class="form-control">
+                                        <label>Fecha y hora de fin:</label>
+                                        <input type="datetime-local" class="form-control" id="idFechaFin">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Recordarme el evento:</label>
+                                        <select class="custom-select" id="idRecord">
+                                            <option selected>Seleccioná el momento</option>
+                                            <option value="1">1 hora antes</option>
+                                            <option value="24">1 dia antes</option>
+                                            <option value="168">1 semana antes</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label>Lugar:</label>
-                                        <input type="text" class="form-control" placeholder="Ej: UTN - Cede Medrano">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Dirección:</label>
-                                        <input type="text" class="form-control" placeholder="Ej: Av. Medrano 951">
+                                        <input type="text" class="form-control" id="idLugar" placeholder="Ej: UTN - Cede Medrano">
                                     </div>
                                 </div>
                             </div>
