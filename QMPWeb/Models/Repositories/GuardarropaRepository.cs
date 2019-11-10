@@ -68,8 +68,11 @@ namespace queMePongo.Repositories
             if(guardarropa.id_duenio == idUsuario){//Compruebo que el que quiera eliminar sea el dueño
 
                 // UTILIZO UNA SQLRAW PORQUE SINO NI PUEDO ELIMINAR VARIOS REGISTROS DE LA TABLA guardarropaxusuario
-                db.Database.ExecuteSqlRaw($"delete from guardarropaxusuario Where id_guardarropa = '{idGuardarropa}'");
-
+                db.Database.ExecuteSqlRaw($"Delete from guardarropaxusuario Where id_guardarropa = '{idGuardarropa}'");
+                // db.Database.ExecuteSqlRaw($"Delete from guardarropas Where id_duenio = '{idUsuario}'");
+                db.guardarropas.Remove(guardarropa);
+                db.SaveChanges();
+                
             } else {
                 db.Remove(db.guardarropaXusuarioRepositories.Single(gxu => gxu.id_guardarropa == idGuardarropa && gxu.id_usuario == idUsuario));
                 db.SaveChanges();
@@ -78,15 +81,18 @@ namespace queMePongo.Repositories
             return "Guardarropa "+ guardarropa.nombreGuardarropas +" eliminado!";
         }
 
-        public Guardarropa buscarGuardarropaPorIdYPorDuenio(int idGuardarropa, int idUsuarioDuenio){
+        public Guardarropa buscarGuardarropaPorIdYPorDuenio(int idGuardarropa, int idUsuarioDuenio){//Este metodo lo utilizo cuando voy a compartir el guardarropa
             DB db = new DB();
             return db.guardarropas.FromSqlRaw($"Select * From guardarropas Where id_guardarropa = '{idGuardarropa}' and id_duenio = '{idUsuarioDuenio}'").FirstOrDefault();
         }
 
-        [HttpPost]
-        public List<Prenda> PrendasDelGuardarropas(int idGuardarropa){
-
+        public Guardarropa buscarGuardarropaPorId(int idGuardarropa){//Este lo utilizo cuando quiero buscar info de cualquier guardarropa
             DB db = new DB();
+            return db.guardarropas.FromSqlRaw($"Select * From guardarropas Where id_guardarropa = '{idGuardarropa}'").FirstOrDefault();
+        }
+
+        [HttpPost]
+        public List<Prenda> PrendasDelGuardarropas(int idGuardarropa, DB db){
 
             List<guardarropaXprendaRepository> guardarropaXPrendaDAO = new List<guardarropaXprendaRepository>();
             guardarropaXPrendaDAO = db.guardarropaXprendaRepositories.Where(u => u.id_guardarropa == idGuardarropa).ToList();

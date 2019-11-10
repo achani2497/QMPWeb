@@ -36,17 +36,17 @@ namespace QMPWeb.Controllers
             DB db = new DB();
             Guardarropa guardarropa = new Guardarropa();
 
-            int idUsuario = Convert.ToInt32(form["idUsuario"]);
+            int idUser = Convert.ToInt32(form["idUsuario"]);
 
             guardarropa.nombreGuardarropas = form["nombreGuardarropa"];
-            guardarropa.id_duenio = idUsuario;
+            guardarropa.id_duenio = idUser;
 
             GuardarropaRepository guardarropaRepo = new GuardarropaRepository();
-            guardarropaRepo.Create(guardarropa, db, idUsuario);
+            guardarropaRepo.Create(guardarropa, db, idUser);
 
             TempData["SuccessMessage"] = "Guardarropa "+guardarropa.nombreGuardarropas+" creado con exito!";
 
-            return RedirectToAction("Index", "Guardarropas", new {id = idUsuario});
+            return RedirectToAction("Index", "Guardarropas", new {idUsuario = idUser});
 
         }
 
@@ -58,7 +58,7 @@ namespace QMPWeb.Controllers
             var mensaje = guardarropaDAO.Delete(idGuardarropa, idUsuario);
 
             TempData["SuccessMessage"] = mensaje;
-            return RedirectToAction("Index", "Guardarropas", new {id = idUsuario});
+            return RedirectToAction("Index", "Guardarropas", new {idUsuario = idUsuario});
 
         }
 
@@ -87,25 +87,25 @@ namespace QMPWeb.Controllers
 
                     TempData["SuccessMessage"] = "Guardarropa compartido con "+ usuarioParaCompartir.usuario +" :D !";
 
-                    return RedirectToAction("Index", "Guardarropas", new {id = idUsuarioDuenio});
+                    return RedirectToAction("Index", "Guardarropas", new {idUsuario = idUsuarioDuenio});
 
                 case 1:
 
                     TempData["ErrorMessage"] = "No se puede compartir el guardarropas con el usuario " + nombreDeUsuarioACompartir + " porque es de un tipo de usuario inferior al tuyo!";
 
-                    return RedirectToAction("Index", "Guardarropas", new {id = idUsuarioDuenio});
+                    return RedirectToAction("Index", "Guardarropas", new {idUsuario = idUsuarioDuenio});
 
                 case 2:
 
                     TempData["ErrorMessage"] = "Ya compartiste el guardarropa "+ guardarropaParaCompartir.nombreGuardarropas +" con el usuario " + nombreDeUsuarioACompartir + "!";
 
-                    return RedirectToAction("Index", "Guardarropas", new {id = idUsuarioDuenio});
+                    return RedirectToAction("Index", "Guardarropas", new {idUsuario = idUsuarioDuenio});
 
                 case 3:
 
                     TempData["ErrorMessage"] = "El usuario " + nombreDeUsuarioACompartir + " no existe!";
 
-                    return RedirectToAction("Index", "Guardarropas", new {id = idUsuarioDuenio});
+                    return RedirectToAction("Index", "Guardarropas", new {idUsuario = idUsuarioDuenio});
 
                 default:
 
@@ -133,29 +133,63 @@ namespace QMPWeb.Controllers
 
                 TempData["SuccessMessage"] = "Modificaste el nombre del guardarropa '" + nombreViejoGuardarropa + "' a '" + nuevoNombreGuardarropa + "' con exito :D !";
 
-                return RedirectToAction("Index", "Guardarropas", new {id = idUsuario});
+                return RedirectToAction("Index", "Guardarropas", new {idUsuario = idUsuario});
 
             } else {
 
                 TempData["ErrorMessage"] = "No podes editar el guardarropa " + nombreViejoGuardarropa + " porque no sos el dueño";
 
-                return RedirectToAction("Index", "Guardarropas", new {id = idUsuario});
+                return RedirectToAction("Index", "Guardarropas", new {idUsuario = idUsuario});
 
             }
 
         }
 
-        [HttpPost]
-        public List<Prenda> TraerPrendasDelGuardarropa(int idGuardarropa){
-            
-            GuardarropaRepository guardarropaDAO = new GuardarropaRepository();
+        public IActionResult VerPrendasDelGuardarropas(int idGuardarropa, int idUsuario){
 
-            return guardarropaDAO.PrendasDelGuardarropas(idGuardarropa);
+            DB db = new DB();
+            GuardarropaRepository guardarropaDAO = new GuardarropaRepository();
+            Guardarropa guardarropa = guardarropaDAO.buscarGuardarropaPorId(idGuardarropa);
+
+            List<Prenda> prendas = guardarropaDAO.PrendasDelGuardarropas(idGuardarropa, db);
+
+            ViewBag.Prendas = prendas;
+            ViewBag.IdGuardarropa = idGuardarropa;
+            ViewBag.nombreGuardarropa = guardarropa.nombreGuardarropas;
+            ViewBag.Id = idUsuario;
+
+            return View("PrendasDelGuardarropa");
+
         }
-        public class JsonGuardarropa
-        {
-            public int idUsuario { get; set; }
-            public string nombreGuardarropa { get; set; }
+
+        public IActionResult EliminarPrenda(IFormCollection form){
+
+            PrendaRepository prendaDAO = new PrendaRepository();
+            DB db = new DB();
+            
+            string idPrendaString = form["idPrenda"];
+            string idUsuarioString = form["idUsuario"];
+            string idGuardarropaString = form["idGuardarropa"];
+
+            int idPrenda = Convert.ToInt32(idPrendaString);
+            int idUser = Convert.ToInt32(idUsuarioString);
+            int idGuardarropa = Convert.ToInt32(idGuardarropaString);
+
+            if(prendaDAO.EliminarPrenda(idPrenda, idUser, db)){
+
+                TempData["SuccessMessage"] = "Prenda eliminada! :D";
+
+                return RedirectToAction("VerPrendasDelGuardarropas", "Guardarropas", new {idGuardarropa = idGuardarropa ,idUsuario = idUser});
+
+            } else {
+
+                TempData["ErrorMessage"] = "No podes eliminar esta prenda porque no sos su dueño!";
+
+                return RedirectToAction("VerPrendasDelGuardarropas", "Guardarropas", new {idGuardarropa = idGuardarropa ,idUsuario = idUser});
+
+            }
+
         }
+
     }
 }

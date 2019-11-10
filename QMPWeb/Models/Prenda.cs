@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace QueMePongo
 {
@@ -32,7 +33,14 @@ namespace QueMePongo
 
         [Column("cantcalif")]
         public int cantCalif { get; set; }
+        
+        [Column("urlimagen")]
+        public string urlImagen { get; set; }
+        [Column("id_duenio")]
+        public int id_duenio  {get; set; }
 
+        [NotMapped]
+        public IFormFile imagen { get; set; }
         public List<Evento> eventos = new List<Evento>();
 
         [NotMapped]

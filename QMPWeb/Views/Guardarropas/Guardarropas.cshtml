@@ -47,7 +47,8 @@
                                 <img src="~/media/guardarropa.png" class="img-fluid icono-de-guardarropa">
                             </div>
                             <div class="card-footer">
-                                <button onclick="cargarPrendasDelGuardarropa('@guardarropa.id_guardarropa', '@guardarropa.nombreGuardarropa')" class="btn btn-warning btn-block btn-sm letra-de-titulo" data-toggle="modal" data-target="#prendasModal"><i class="far fa-eye"></i> Ver prendas</button>
+                                @Html.ActionLink("Ver Prendas", "VerPrendasDelGuardarropas", "Guardarropas", new {idGuardarropa = @guardarropa.id_guardarropa, idUsuario = ViewBag.Id}, new {@class="btn btn-warning btn-block btn-sm letra-de-titulo"})
+                                <!-- <a href="/Guardarropas/VerPrendasDelGuardarropas/@guardarropa.id_guardarropa" class="btn btn-warning btn-block btn-sm letra-de-titulo"> <i class="far fa-eye"></i> Ver prendas</a> -->
                                 <button onclick="cargarInfoParaCompartirGuardarropa('@guardarropa.id_guardarropa')" class="btn btn-light btn-block btn-sm letra-de-titulo" data-toggle="modal" data-target="#guardarropaShare"><i class="fas fa-user-plus"></i> Compartir guardarropa</button>
                                 <button onclick="cargarInfoUpdateGuardarropa('@guardarropa.nombreGuardarropa', '@guardarropa.id_guardarropa')" class="btn btn-primary btn-block btn-sm letra-de-titulo" data-toggle="modal" data-target="#guardarropaEdit"><i class="far fa-edit"></i> Editar guardarropa</button>
                                 <a asp-controller="Guardarropas" asp-action="eliminarGuardarropa" asp-route-idGuardarropa="@guardarropa.id_guardarropa" asp-route-idUsuario="@ViewBag.Id" class="btn btn-danger btn-block btn-sm letra-de-titulo"><i class="far fa-trash-alt"></i> Eliminar guardarropa</a>
@@ -92,25 +93,6 @@
                            <button class="btn btn-danger btn-block" data-dismiss="modal"><i class="far fa-trash-alt"></i> Descartar</button>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- MODAL PARA VISUALIZAR TODAS LAS PRENDAS -->
-        <div class="modal fade" role="dialog" tabindex="-1" id="prendasModal">
-            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
-                <div class="modal-content bg-default">
-                    <div class="modal-header">
-                        <h1 class="letra-de-titulo letra-blanca letra-con-sombra">Prendas del guardarropa <span class="letra-de-titulo letra-blanca letra-con-sombra" id="nombreGuardarropaPrendas"><span> </h1>
-                        <button class="close" data-dismiss="modal">
-                            <span>&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row mx-auto" id="prendasGuardarropa">
-
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

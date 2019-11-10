@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace queMePongo.Repositories
 {
@@ -28,18 +29,32 @@ namespace queMePongo.Repositories
             s.cantCalif = prenda.cantCalif;
             context.SaveChanges();
         }
-        public void EliminarPrenda(int prendaId, DB context)
+        public bool EliminarPrenda(int prendaId, int idUsuario, DB context)
         {
-            Prenda g = new Prenda();
-            g = context.prendas.Single(b => b.id_prenda == prendaId);
-            List<guardarropaXprendaRepository> gpr = new List<guardarropaXprendaRepository>();
-            gpr = context.guardarropaXprendaRepositories.Where(u => u.id_prenda == prendaId).ToList();
-            foreach (guardarropaXprendaRepository a in gpr)
-            {
-                context.guardarropaXprendaRepositories.Remove(a);
+            Prenda prenda = new Prenda();
+            prenda = context.prendas.FromSqlRaw($"Select * from prendas where id_prenda='{prendaId}' and id_duenio='{idUsuario}'").FirstOrDefault();
+
+            if(prenda != null){
+
+                string pathDeImagenADeletear = "wwwroot/uploads/"+prenda.urlImagen;
+
+                List<guardarropaXprendaRepository> gpr = new List<guardarropaXprendaRepository>();
+                gpr = context.guardarropaXprendaRepositories.Where(u => u.id_prenda == prendaId).ToList();
+                foreach (guardarropaXprendaRepository a in gpr)
+                {
+                    context.guardarropaXprendaRepositories.Remove(a);
+                }
+
+                File.Delete(pathDeImagenADeletear);
+
+                context.prendas.Remove(prenda);
+                context.SaveChanges();
+
+                return true;
+            } else {
+                return false;
             }
-            context.prendas.Remove(g);
-            context.SaveChanges();
+
         }
 
         public Prenda BuscarPrendaPorId(int idPrenda){
@@ -48,6 +63,14 @@ namespace queMePongo.Repositories
             Prenda prenda = db.prendas.FromSqlRaw($"Select * From prendas Where id_prenda = '{idPrenda}'").FirstOrDefault();
 
             return prenda;
+
+        }
+
+        public List<Prenda> PrendasDelUsuario(int idUsuario){
+
+            DB db = new DB();
+
+            return db.prendas.Where(prenda => prenda.id_duenio == idUsuario).ToList();
 
         }
     }

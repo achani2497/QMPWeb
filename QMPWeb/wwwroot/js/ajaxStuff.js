@@ -10,40 +10,48 @@ function cargarInfoParaCompartirGuardarropa(idGuardarropa){
     $("#idGuardarropaACompartir").val(idGuardarropa)
 }
 
-function cargarPrendasDelGuardarropa(idGuardarropa, nombreGuardarropa){
-    $("#nombreGuardarropaPrendas").text(nombreGuardarropa)
-    console.log('Id del guardarropas del que voy a traer las prendas '+idGuardarropa)
+function cargarSelectsParaCreacionDePrenda(idUsuario){
+
+    $('#guardarropasDelUsuario').empty();
+    $('#tiposDeTela').empty();
+    $('#tiposDePrenda').empty();
+
+    $('#guardarropasDelUsuario').append('<option selected>Seleccioná algún guardarropa</option>');
+    $('#tiposDePrenda').append('<option selected>Seleccioná el tipo de prenda</option>');
+    $('#tiposDeTela').append('<option selected>Seleccioná el tipo de tela de la prenda</option>');
+
     $.ajax({
         type: 'POST',
-        url: '/Guardarropas/TraerPrendasDelGuardarropa',
-        data: ('idGuardarropa='+idGuardarropa),
+        url: '/Usuario/TraerGuardarropasDelUsuario',
+        data: ('idUsuario='+idUsuario),
         success: (response) => {
             if(response.length > 0){
-                $("#prendasGuardarropa").empty()
                 response.forEach(function(element){
-                    $("#prendasGuardarropa").append(`
-                        <div class="col-md-4 mb-2">
-                            <div class="card black-card">
-                                <div class="card-body mx-auto">
-                                    <p class="letra-de-titulo">Color principal: `+element.colorPrincipal+`</p>
-                                    <button class="btn btn-danger btn-block btn-sm mt-4"><i class="far fa-trash-alt"></i> Eliminar prenda</button>
-                                </div>
-                            </div>
-                        </div>
-                    `)
+                    $('#guardarropasDelUsuario').append("<option value="+element.id_guardarropa+">"+element.nombreGuardarropas+"</option>")
                 })
-            }else{                
-                $("#prendasGuardarropa").html(`
-                    <div class="container">
-                        <div class="col-lg-12 alert alert-danger alert-dismissible fade show mt-4 text-center">
-                            <b> Este guardarropa todavia no tiene prendas!</b>
-                        </div>
-                    </div>
-                `)
+            } else {
+                console.log("El usuario no tiene guardarropas todavia")
             }
-        },
-        failure:() => {
-            console.log("No hay nada")
+        }
+    })
+
+    $.ajax({
+        type: 'GET',
+        url: '/Prendas/TraerTelas',
+        success: (response) => {
+            response.forEach(function(tela){
+                $('#tiposDeTela').append("<option value="+tela.id_tela+">"+tela.descripcion+"</option>")
+            })
+        }
+    })
+
+    $.ajax({
+        type: 'GET',
+        url: '/Prendas/TraerTiposDePrenda',
+        success: (response) => {
+            response.forEach(function(tipoDePrenda){
+                $('#tiposDePrenda').append("<option value="+tipoDePrenda.id_tipoPrenda+">"+tipoDePrenda.descripcion+"</option>")
+            })
         }
     })
 
