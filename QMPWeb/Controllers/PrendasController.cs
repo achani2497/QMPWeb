@@ -24,6 +24,21 @@ namespace QMPWeb.Controllers
         {
             if(idUsuario != 0){
 
+                guardarropaXusuarioRepository guardarropaDAO = new guardarropaXusuarioRepository();
+
+                List<guardarropaXusuarioRepository> guardarropasParciales = guardarropaDAO.listarGuardarropasDeUsuario(idUsuario);
+
+                guardarropaXprendaRepository prendasDAO = new guardarropaXprendaRepository();
+
+                List<guardarropaXprendaRepository> prendasParciales = new List<guardarropaXprendaRepository>();
+
+                foreach(guardarropaXusuarioRepository guarda in guardarropasParciales)
+                {
+                    prendasParciales.AddRange(prendasDAO.listarPrendasDeGuardarropa(guarda.id_guardarropa)); 
+                }
+            
+                ViewBag.Prendas = prendasParciales;
+
                 ViewBag.Id = idUsuario;
 
                 ViewBag.PrendasDelUsuario = TraerPrendasDelUsuario(idUsuario);

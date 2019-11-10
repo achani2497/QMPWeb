@@ -27,6 +27,8 @@ namespace queMePongo.Repositories
             var s = context.prendas.Single(b => b.id_prenda == prenda.id_prenda);
             s.calificacion = prenda.calificacion;
             s.cantCalif = prenda.cantCalif;
+            context.prendas.Remove(s);
+            context.prendas.Add(prenda);
             context.SaveChanges();
         }
         public bool EliminarPrenda(int prendaId, int idUsuario, DB context)
@@ -54,7 +56,6 @@ namespace queMePongo.Repositories
             } else {
                 return false;
             }
-
         }
 
         public Prenda BuscarPrendaPorId(int idPrenda){

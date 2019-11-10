@@ -1,7 +1,10 @@
 ﻿using System;
 using QueMePongo;
-namespace queMePongo.Repositories
-{
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+
     public class EventoRepository
     {
         public void Insert(Evento evento, DB context)
@@ -16,9 +19,10 @@ namespace queMePongo.Repositories
 
         }
 
-        public void Delete(int eventooId)
+        public void Delete(int eventoId)
         {
-
+            DB db = new DB();
+            db.Database.ExecuteSqlRaw($"delete from evento Where id_evento = '{eventoId}'");
         }
     }
-}
+
