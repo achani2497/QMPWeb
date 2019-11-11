@@ -146,6 +146,20 @@
         transform: scale(0.99)
     }
 
+    .card .card-footer, .card-header{
+        border: none;
+        background-color: transparent;
+    }
+
+    .card .form-group input{
+        background-color: transparent;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+        border-radius: 0%;
+    }
+
 /* COSAS PARA LOS EVENTOS */
     .simple-ls{
         list-style: none;

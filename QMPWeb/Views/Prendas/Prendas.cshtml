@@ -21,7 +21,17 @@
                 </div> 
             }
 
-            <!-- ESTA ES LA CARD QUE TENEMOS QUE LOOPEAR -->
+            @if(TempData["ErrorMessage"] != null){
+                <div class="container">
+                    <div class="col-lg-12 alert alert-danger alert-dismissible fade show mt-4 text-center">
+                        <b> @TempData["ErrorMessage"] </b>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div> 
+            }
+
             @if(Enumerable.Count(ViewBag.PrendasDelUsuario) > 0){
                 foreach(var prenda in ViewBag.PrendasDelUsuario){
                     <div class="col-md-3 col-sm-6 col-lg-3 mt-4">
@@ -32,7 +42,8 @@
                                     <input type="hidden" name="idUsuario" value="@prenda.id_duenio">
                                     <input type="hidden" name="idPrenda" value="@prenda.id_prenda">
                                     <button type="submit" class="btn btn-danger btn-block btn-sm"><i class="far fa-trash-alt"></i> Eliminar prenda</button>
-                                </form>                                   
+                                </form>
+                                @Html.ActionLink("Editar prenda", "CargarPrendaParaEditar", "Prendas", new {idPrenda = prenda.id_prenda, idUsuario = ViewBag.Id}, new {@class="btn btn-primary btn-block btn-sm mt-2 letra-de-titulo"})
                             </div>
                         </div>
                     </div>

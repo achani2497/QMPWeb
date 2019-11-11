@@ -94,6 +94,74 @@ namespace QMPWeb.Controllers
             return RedirectToAction("Index", "Prendas", new {idUsuario = idUsuario});
         }
 
+        public IActionResult CargarPrendaParaEditar(int idPrenda, int idUsuario){
+
+            PrendaRepository prendaDAO = new PrendaRepository();
+            TelaRepository telaDAO = new TelaRepository();
+            TipoPrendaRepository tipoPrendaDAO = new TipoPrendaRepository();
+
+            Prenda prenda = prendaDAO.BuscarPrendaPorId(idPrenda);
+
+            ViewBag.Id = idUsuario;
+            ViewBag.Prenda = prenda;
+
+            ViewBag.TipoDePrenda = tipoPrendaDAO.TraerTipoDePrendaPorId(prenda.tipoPrenda);
+            ViewBag.TipoDeTelaDePrenda = telaDAO.TraerTelaPorId(prenda.id_tela);
+
+            ViewBag.TiposDePrenda = tipoPrendaDAO.TraerTiposDePrenda();
+            ViewBag.Telas = telaDAO.TraerTelas();
+
+            return View("Prenda");
+
+        }
+
+        [HttpPost]
+        public IActionResult ActualizarPrenda(IFormCollection form, IFormFile imagenNueva){
+
+            PrendaRepository prendaDAO = new PrendaRepository();
+
+            string idUsuarioString = form["idUSuario"];
+            string idPrendaString = form["idPrenda"];
+            string idTipoPrendaViejoString = form["tipoPrendaViejo"];
+            string idTipoPrendaNuevoString = form["tipoPrendaNuevo"];
+            string idTipoTelaViejoString = form["tipoTelaViejo"];
+            string idTipoTelaNuevoString = form["tipoTelaNuevo"];
+  
+            int idUsuario = Convert.ToInt32(idUsuarioString);
+            int idPrenda = Convert.ToInt32(idPrendaString);
+
+            Prenda prenda = prendaDAO.BuscarPrendaPorId(idPrenda);
+
+            prenda.id_prenda = idPrenda;
+            prenda.colorPrincipal = form["colorPrincipal"];
+            prenda.colorSecundario = form["colorSecundario"];
+
+            if(imagenNueva != null){
+                prenda.urlImagen = form["imagenNueva"];
+            } else {
+                prenda.urlImagen = form["imagenVieja"];
+            }
+
+            if(idTipoPrendaNuevoString != "-"){
+                int idTipoPrendaNuevo = Convert.ToInt32(idTipoPrendaNuevoString);
+                prenda.tipoPrenda = idTipoPrendaNuevo;
+            } 
+
+            if(idTipoTelaNuevoString != "-"){
+                int idTipoTela = Convert.ToInt32(idTipoTelaNuevoString);
+                prenda.id_tela = idTipoTela;
+            }
+
+            if(prendaDAO.EditarPrenda(prenda, idUsuario)){
+                TempData["SuccessMessage"] = "Prenda editada correctamente! :D";
+                return RedirectToAction("Index", "Prendas", new {idUsuario = idUsuario});
+            } else {
+                TempData["ErrorMessage"] = "No podes editar esta prenda porque no sos el dueño :(";
+                return RedirectToAction("Index", "Prendas", new {idUsuario = idUsuario});
+            }
+
+        }
+
         [HttpPost]
         public IActionResult EliminarPrenda(IFormCollection form){
 

@@ -44,8 +44,9 @@
                                 <input type="hidden" name="idUsuario" value="@ViewBag.Id">
                                 <input type="hidden" name="idPrenda" value="@prenda.id_prenda">
                                 <input type="hidden" name="idGuardarropa" value="@ViewBag.IdGuardarropa">
-                                <button type="submit" class="btn btn-danger btn-block btn-sm mt-4"><i class="far fa-trash-alt"></i> Eliminar prenda</button>
-                            </form>  
+                                <button type="submit" class="btn btn-danger btn-block btn-sm letra-de-titulo mt-4"><i class="far fa-trash-alt"></i> Eliminar prenda</button>
+                                @Html.ActionLink("Editar prenda", "CargarPrendaParaEditar", "Prendas", new {idPrenda = prenda.id_prenda, idUsuario = ViewBag.Id}, new {@class="btn btn-primary btn-block btn-sm mt-2 letra-de-titulo"})
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -22,15 +22,26 @@ namespace queMePongo.Repositories
             context.SaveChanges();
         }
 
-        public void EditarPrenda(Prenda prenda, DB context)
+        public bool EditarPrenda(Prenda prenda, int idUsuarioModificador)
         {
-            var s = context.prendas.Single(b => b.id_prenda == prenda.id_prenda);
-            s.calificacion = prenda.calificacion;
-            s.cantCalif = prenda.cantCalif;
-            context.prendas.Remove(s);
-            context.prendas.Add(prenda);
-            context.SaveChanges();
+
+            DB context = new DB();
+
+            if(prenda.id_duenio == idUsuarioModificador){
+                var s = context.prendas.FromSqlRaw($"Select * from prendas where id_prenda = '{prenda.id_prenda}'").AsNoTracking().FirstOrDefault();
+                s.calificacion = prenda.calificacion;
+                s.cantCalif = prenda.cantCalif;
+                context.prendas.Update(prenda);
+                context.SaveChanges();
+
+                return true;
+
+            } else {
+                return false;
+            }
+
         }
+
         public bool EliminarPrenda(int prendaId, int idUsuario, DB context)
         {
             Prenda prenda = new Prenda();
@@ -61,7 +72,7 @@ namespace queMePongo.Repositories
         public Prenda BuscarPrendaPorId(int idPrenda){
             DB db = new DB();
 
-            Prenda prenda = db.prendas.FromSqlRaw($"Select * From prendas Where id_prenda = '{idPrenda}'").FirstOrDefault();
+            Prenda prenda = db.prendas.FromSqlRaw($"Select * From prendas Where id_prenda = '{idPrenda}'").AsNoTracking().FirstOrDefault();
 
             return prenda;
 

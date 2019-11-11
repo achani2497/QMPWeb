@@ -1,6 +1,8 @@
 ﻿using System;
 using QueMePongo;
 using System.Linq;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace queMePongo.Repositories
 {
@@ -16,6 +18,19 @@ namespace queMePongo.Repositories
                 context.SaveChanges();
             }
             return (context.telas.Single(b => b.descripcion == tela.descripcion)).id_tela;
+        }
+
+        public List<Tela> TraerTelas(){
+            DB db = new DB();
+
+            return db.telas.ToList();
+        }
+
+        public Tela TraerTelaPorId(int idTela){
+
+            DB db = new DB();
+
+            return db.telas.FromSqlRaw($"Select * from telas where id_tela = '{idTela}'").FirstOrDefault();
         }
     }
 }

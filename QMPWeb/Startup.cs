@@ -83,6 +83,11 @@ namespace QMPWeb
                     pattern: "{controller=Prendas}/{action=TraerTelas}");
 
                 endpoints.MapControllerRoute(
+                    name: "EditarPrenda",
+                    pattern: "{controller=Prendas}/{action=CargarPrendaParaEditar}/{idPrenda}/{idUsuario}"
+                );
+
+                endpoints.MapControllerRoute(
                     name: "TraerTiposDePrenda",
                     pattern: "{controller=Prendas}/{action=TraerTiposDePrenda}");
 

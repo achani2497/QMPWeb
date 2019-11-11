@@ -2,6 +2,7 @@
 using QueMePongo;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace queMePongo.Repositories
 {
@@ -30,17 +31,21 @@ namespace queMePongo.Repositories
             }
         }
 
-        public TipoPrenda loguing(int tpid, DB context)
-        {
-            TipoPrenda tp = new TipoPrenda();
-            tp = context.tipoprendas.Single(u => u.id_tipoPrenda == tpid);
-            List<telaXtipoPrendaRepository> ttpr = new List<telaXtipoPrendaRepository>();
-            ttpr = context.telaXtipoPrendaRepositories.Where(u => u.id_tipoprenda == tpid).ToList();
-            foreach (telaXtipoPrendaRepository a in ttpr)
-            {
-                tp.tiposDeTelaPosibles.Add((context.telas.Single(u => u.id_tela == a.id_tela)).descripcion);
-            }
-            return tp;
+        public List<TipoPrenda> TraerTiposDePrenda(){
+
+            DB db = new DB();
+
+            return db.tipoprendas.ToList();
+
         }
+
+        public TipoPrenda TraerTipoDePrendaPorId(int idTipoPrenda){
+
+            DB db = new DB();
+
+            return db.tipoprendas.FromSqlRaw($"Select * from tipoprendas where id_tipoprenda = '{idTipoPrenda}'").FirstOrDefault();
+
+        }
+
     }
 }
