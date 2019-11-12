@@ -15,7 +15,7 @@ namespace QMPWeb.Controllers
         public IActionResult Index(int idUsuario)
         {
                 
-               if(idUsuario != 0){
+            if(idUsuario != 0){
                 
                 var userRepository = new UsuarioRepository();
                 DB db = new DB();
@@ -38,35 +38,39 @@ namespace QMPWeb.Controllers
             DB db = new DB();
             Evento evento = new Evento();
 
-            int idUsuario = Convert.ToInt32(form["idUsuario"]);
+            int idUser = Convert.ToInt32(form["idUsuario"]);
 
             evento.descripcion = form["despripcionEvento"];
             evento.fechaInicioPrendas = Convert.ToDateTime(form["idFechaIni"]);
             evento.fechaFinPrendas = Convert.ToDateTime(form["idFechaFin"]);
             evento.fechaNotificacion = evento.fechaInicioPrendas.AddHours(-1 * Convert.ToInt32(form["idRecord"])); //CHEQUEAR
-            evento.id_usuario = idUsuario;
+            evento.id_usuario = idUser;
             evento.lugar = form["idLugar"];
             evento.tipoEvento = 1; //------------------------------------------TIPO DE EVENTO????????????????????
-            // AGREGAR USER?
 
             EventoRepository eventoRepo = new EventoRepository();
             eventoRepo.Insert(evento, db);
 
-            TempData["SuccessMessage"] = "Evento creado con exito!";
+            TempData["SuccessMessage"] = "Evento creado con exito! :D";
 
-            return RedirectToAction("Index", "Eventos", new { id = idUsuario });
+            return RedirectToAction("Index", "Eventos", new { idUsuario = idUser });
 
         }
 
-        public IActionResult EliminarEvento(int idEvento, int idUsuario)
+        public IActionResult EliminarEvento(IFormCollection form)
         {
+
+            string idEventoString = form["idEvento"];
+            string idUsuarioString = form["idUsuario"];
+            int idEvento = Convert.ToInt32(idEventoString);
+            int idUser = Convert.ToInt32(idUsuarioString);
 
             EventoRepository eventoDAO = new EventoRepository();
 
             eventoDAO.Delete(idEvento);
 
-            TempData["SuccessMessage"] = "Evento eliminado";
-            return RedirectToAction("Index", "Evento", new { id = idUsuario });
+            TempData["SuccessMessage"] = "Evento eliminado! :D";
+            return RedirectToAction("Index", "Eventos", new { idUsuario = idUser });
 
         }
 

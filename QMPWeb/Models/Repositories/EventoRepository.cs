@@ -12,7 +12,6 @@ public class EventoRepository
         {
             context.eventos.Add(evento);
             context.SaveChanges();
-            Console.WriteLine($"\nEvento {evento.id_evento} - {evento.descripcion} creado!");
         }
 
     public void Update(Evento evento, DB context)
@@ -23,7 +22,7 @@ public class EventoRepository
     public void Delete(int eventoId)
         {
             DB db = new DB();
-            db.Database.ExecuteSqlRaw($"delete from evento Where id_evento = '{eventoId}'");
+            db.Database.ExecuteSqlRaw($"delete from eventos Where id_evento = '{eventoId}'");
         }
     }
 
