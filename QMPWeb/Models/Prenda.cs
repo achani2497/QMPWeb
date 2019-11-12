@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
 namespace QueMePongo
@@ -62,6 +64,7 @@ namespace QueMePongo
         [NotMapped]
         public TipoPrenda tipo;
 
+
         public Prenda(TipoPrenda tipoP, String tel, String cp, String cs)
         {
             if (cp == cs) throw new ArgumentException("el color principal no puede ser igual que el secundario");
@@ -110,6 +113,22 @@ namespace QueMePongo
                 }
             }
             return true;
+        }
+
+        public string nombreUnicoImagen(IFormFile imagenDePrenda, IHostingEnvironment ie){
+
+            var imagen = imagenDePrenda;
+            
+            string nombreDeArchivo = Path.GetFileName(imagenDePrenda.FileName);
+
+            var nombreUnico = Path.GetFileNameWithoutExtension(nombreDeArchivo)+"-"+Guid.NewGuid().ToString().Substring(0,4)+Path.GetExtension(nombreDeArchivo);;
+            var uploads = Path.Combine(ie.WebRootPath, "uploads");
+            var filePath = Path.Combine(uploads, nombreUnico);
+
+            imagen.CopyTo(new FileStream(filePath, FileMode.Create));
+
+            return nombreUnico;
+
         }
     }
 }

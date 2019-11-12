@@ -18,11 +18,11 @@
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label class="letra-de-titulo">Color principal</label>
-                                    <input type="text" class="form-control" name="colorPrincipal" value="@ViewBag.Prenda.colorPrincipal">
+                                    <input type="text" class="form-control editable" name="colorPrincipal" value="@ViewBag.Prenda.colorPrincipal">
                                 </div>
                                 <div class="form-group">
                                     <label class="letra-de-titulo">Color secundario</label>
-                                    <input type="text" class="form-control" name="colorSecundario" value="@ViewBag.Prenda.colorSecundario">
+                                    <input type="text" class="form-control editable" name="colorSecundario" value="@ViewBag.Prenda.colorSecundario">
                                 </div>
                                 <div class="form-group">
                                     <label class="letra-de-titulo">Imagen de la prenda</label>
@@ -38,8 +38,8 @@
                             </div>
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
-                                    <label class="letra-de-titulo">Tipo de prenda</label>
-                                    <input type="text" class="form-control" name="tipoPrendaViejo" value="@ViewBag.TipoDePrenda.descripcion">
+                                    <label class="letra-de-titulo">Tipo de prenda actual</label>
+                                    <input type="text" class="form-control" name="tipoPrendaViejo" value="@ViewBag.TipoDePrenda.descripcion" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="letra-de-titulo">Tipo de prenda al que lo quieras cambiar</label>
@@ -52,8 +52,8 @@
                                 </div>
                                 <hr>
                                 <div class="form-group">
-                                    <label class="letra-de-titulo">Tipo de tela</label>
-                                    <input type="text" class="form-control" name="tipoTelaViejo" value="@ViewBag.TipoDeTelaDePrenda.descripcion">
+                                    <label class="letra-de-titulo">Tipo de tela actual</label>
+                                    <input type="text" class="form-control readonly" name="tipoTelaViejo" value="@ViewBag.TipoDeTelaDePrenda.descripcion" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="letra-de-titulo">Tipo de tela al que lo quieras cambiar</label>

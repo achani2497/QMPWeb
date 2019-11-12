@@ -38,12 +38,13 @@
                         <div class="card box-shadow black-card">
                             <img src="~/uploads/@prenda.urlImagen" width="200px" height="200px" class="card-img-top img-fluid" alt="foto-de-prenda">
                             <div class="card-footer">
+                                <button type="button" onclick="agregarPrendaAUnGuardarropa(@prenda.id_prenda, @ViewBag.Id)" class="btn btn-block btn-light letra-de-titulo btn-sm mb-2" data-toggle="modal" data-target="#agregarPrendaAGuardarropa"><i class="fas fa-plus"></i> Agregar a un guardarropa</button>
+                                @Html.ActionLink("Editar prenda", "CargarPrendaParaEditar", "Prendas", new {idPrenda = prenda.id_prenda, idUsuario = ViewBag.Id}, new {@class="btn btn-primary btn-block btn-sm mb-2 letra-de-titulo"})
                                 <form asp-controller="Prendas" asp-action="EliminarPrenda" method="POST">
                                     <input type="hidden" name="idUsuario" value="@prenda.id_duenio">
                                     <input type="hidden" name="idPrenda" value="@prenda.id_prenda">
                                     <button type="submit" class="btn btn-danger btn-block btn-sm"><i class="far fa-trash-alt"></i> Eliminar prenda</button>
                                 </form>
-                                @Html.ActionLink("Editar prenda", "CargarPrendaParaEditar", "Prendas", new {idPrenda = prenda.id_prenda, idUsuario = ViewBag.Id}, new {@class="btn btn-primary btn-block btn-sm mt-2 letra-de-titulo"})
                             </div>
                         </div>
                     </div>
@@ -103,6 +104,33 @@
                         <div class="modal-footer">
                             <button class="btn btn-success btn-block mt-1"><i class="far fa-save"></i> Crear prenda</button>
                             <button class="btn btn-danger m-2 btn-block" data-dismiss="modal"><i class="far fa-trash-alt"></i> Descartar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="agregarPrendaAGuardarropa" role="dialog" tabindex="-1" aria-labelledby="agregarPrendaAUnGuardarropaForm" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-default">
+                    <form asp-controller="Prendas" asp-action="AgregarPrendaAGuardarropa" method="POST">
+                        <div class="modal-header">
+                            <h1 class="letra-blanca letra-con-sombra letra-de-titulo">Agrega la prenda a un guardarropa!</h1>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>  
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="idPrendaAgregacionPrenda" name="idPrenda" value="">
+                            <input type="hidden" id="idUsuarioAgregacionPrenda" name="idUsuario" value="">
+                            <div class="form-group">
+                                <label class="letra-de-titulo">Guardarropa</label>
+                                <select class="custom-select" id="guardarropasDelUsuarioParaPrenda" name="idGuardarropa"></select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-block btn-sm btn-success mt-2"><i class="fas fa-plus"></i>  Agregar al guardarropa</button>
+                            <button class="btn btn-sm btn-block btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Salir</button>
                         </div>
                     </form>
                 </div>

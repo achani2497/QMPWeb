@@ -31,6 +31,11 @@ namespace queMePongo.Repositories
                 var s = context.prendas.FromSqlRaw($"Select * from prendas where id_prenda = '{prenda.id_prenda}'").AsNoTracking().FirstOrDefault();
                 s.calificacion = prenda.calificacion;
                 s.cantCalif = prenda.cantCalif;
+
+                if(!File.Exists("~/uploads/"+prenda.urlImagen)){
+                    
+                }
+
                 context.prendas.Update(prenda);
                 context.SaveChanges();
 
@@ -83,6 +88,31 @@ namespace queMePongo.Repositories
             DB db = new DB();
 
             return db.prendas.Where(prenda => prenda.id_duenio == idUsuario).ToList();
+
+        }
+
+        public bool agregarPrendaAGuardarropa(int idPrenda, int idGuardarropa, int idUsuario){
+
+            DB db = new DB();
+            guardarropaXprendaRepository gxpDAO = new guardarropaXprendaRepository();
+            GuardarropaRepository guardarropaDAO = new GuardarropaRepository();
+
+            var guardarropa = guardarropaDAO.buscarGuardarropaPorId(idGuardarropa);
+            var gxp = db.guardarropaXprendaRepositories.FromSqlRaw($"Select * from guardarropaxprenda where id_guardarropa = '{idGuardarropa}' and id_prenda='{idPrenda}'").FirstOrDefault();
+
+            if(gxp == null){
+                gxpDAO.id_guardarropa = idGuardarropa;
+                gxpDAO.id_prenda = idPrenda;
+
+                db.guardarropaXprendaRepositories.Add(gxpDAO);
+                db.SaveChanges();
+
+                return true; //Se agregó la prenda al guardarropa
+
+            } else {
+                return false; //No se pudo agregar porque la prenda ya está asociada al guardarropas
+            }
+
 
         }
     }

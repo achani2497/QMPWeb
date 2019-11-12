@@ -37,7 +37,7 @@ function cargarSelectsParaCreacionDePrenda(idUsuario){
 
     $.ajax({
         type: 'GET',
-        url: '/Prendas/TraerTelas',
+        url: '/Telas/TraerTelas',
         success: (response) => {
             response.forEach(function(tela){
                 $('#tiposDeTela').append("<option value="+tela.id_tela+">"+tela.descripcion+"</option>")
@@ -47,11 +47,37 @@ function cargarSelectsParaCreacionDePrenda(idUsuario){
 
     $.ajax({
         type: 'GET',
-        url: '/Prendas/TraerTiposDePrenda',
+        url: '/TipoPrenda/TraerTiposDePrenda',
         success: (response) => {
             response.forEach(function(tipoDePrenda){
                 $('#tiposDePrenda').append("<option value="+tipoDePrenda.id_tipoPrenda+">"+tipoDePrenda.descripcion+"</option>")
             })
+        }
+    })
+
+}
+
+function agregarPrendaAUnGuardarropa(idPrenda, idUsuario){
+
+    $('#guardarropasDelUsuarioParaPrenda').empty();
+    $('#guardarropasDelUsuarioParaPrenda').append('<option selected>Seleccioná algún guardarropa</option>');
+    $('#idPrendaAgregacionPrenda').val(idPrenda)
+    $('#idUsuarioAgregacionPrenda').val(idUsuario)
+
+    
+
+    $.ajax({
+        type: 'POST',
+        url: '/Usuario/TraerGuardarropasDelUsuario',
+        data: ('idUsuario='+idUsuario),
+        success: (response) => {
+            if(response.length > 0){
+                response.forEach(function(element){
+                    $('#guardarropasDelUsuarioParaPrenda').append("<option value="+element.id_guardarropa+">"+element.nombreGuardarropas+"</option>")
+                })
+            } else {
+                console.log("El usuario no tiene guardarropas todavia")
+            }
         }
     })
 

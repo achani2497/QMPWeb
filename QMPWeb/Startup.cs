@@ -80,7 +80,7 @@ namespace QMPWeb
 
                 endpoints.MapControllerRoute(
                     name: "TraerTelas",
-                    pattern: "{controller=Prendas}/{action=TraerTelas}");
+                    pattern: "{controller=Telas}/{action=TraerTelas}");
 
                 endpoints.MapControllerRoute(
                     name: "EditarPrenda",
@@ -89,7 +89,7 @@ namespace QMPWeb
 
                 endpoints.MapControllerRoute(
                     name: "TraerTiposDePrenda",
-                    pattern: "{controller=Prendas}/{action=TraerTiposDePrenda}");
+                    pattern: "{controller=TipoPrenda}/{action=TraerTiposDePrenda}");
 
                 endpoints.MapControllerRoute(
                     name:"Login",

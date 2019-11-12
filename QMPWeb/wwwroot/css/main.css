@@ -160,6 +160,10 @@
         border-radius: 0%;
     }
 
+    .card input.editable{
+        background-color: white;
+    }
+
 /* COSAS PARA LOS EVENTOS */
     .simple-ls{
         list-style: none;

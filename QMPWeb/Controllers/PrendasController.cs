@@ -15,7 +15,7 @@ namespace QMPWeb.Controllers
 {
     public class PrendasController : Controller
     {
-        private readonly IHostingEnvironment hostingEnviroment;
+        public readonly IHostingEnvironment hostingEnviroment;
         public PrendasController(IHostingEnvironment ihe){
             hostingEnviroment = ihe;
         }
@@ -77,15 +77,7 @@ namespace QMPWeb.Controllers
             prendaNueva.tipoPrenda = idTipoPrenda;
             prendaNueva.id_duenio = idUsuario;
 
-            var imagen = imagenDePrenda;
-            
-            var nombreUnico = GenerarNombreUnico(imagen.FileName);
-            var uploads = Path.Combine(hostingEnviroment.WebRootPath, "uploads");
-            var filePath = Path.Combine(uploads, nombreUnico);
-
-            imagen.CopyTo(new FileStream(filePath, FileMode.Create));
-
-            prendaNueva.urlImagen = nombreUnico;
+            prendaNueva.urlImagen = prendaNueva.nombreUnicoImagen(imagenDePrenda, hostingEnviroment);
 
             prendaDAO.CrearPrenda(prendaNueva, db, idGuardarropa);
 
@@ -198,21 +190,29 @@ namespace QMPWeb.Controllers
             return prendasDelUsuario;
 
         }
-        public List<Tela> TraerTelas(){
 
-            DB db = new DB();
+        [HttpPost]
+        public IActionResult AgregarPrendaAGuardarropa(IFormCollection form){
 
-            return db.telas.ToList();
+            PrendaRepository prendaDAO = new PrendaRepository();
+
+            string idUsuarioString = form["idUsuario"];
+            string idPrendaString = form["idPrenda"];
+            string idGuardarropaString = form["idGuardarropa"];
+
+            int idUser = Convert.ToInt32(idUsuarioString);
+            int idPrenda = Convert.ToInt32(idPrendaString);
+            int idGuardarropa = Convert.ToInt32(idGuardarropaString);
+
+            if(prendaDAO.agregarPrendaAGuardarropa(idPrenda, idGuardarropa, idUser)){
+                TempData["SuccessMessage"] = "Prenda agregada al guardarropa! :D";
+            }else{
+                TempData["ErrorMessage"] = "Esa prenda ya está agregada en ese guardarropa!";
+            }
+            
+            return RedirectToAction("Index", "Prendas", new {idUsuario = idUser});
 
         }
-        public List<TipoPrenda> TraerTiposDePrenda(){
-            DB db = new DB();
 
-            return db.tipoprendas.ToList();
-        }
-        private string GenerarNombreUnico(string nombreDeArchivo){
-            nombreDeArchivo = Path.GetFileName(nombreDeArchivo);
-            return Path.GetFileNameWithoutExtension(nombreDeArchivo)+"-"+Guid.NewGuid().ToString().Substring(0,4)+Path.GetExtension(nombreDeArchivo);
-        }
     }
 }
