@@ -45,7 +45,7 @@ namespace QueMePongo
         [NotMapped]
         public Atuendo atuendo { get; set; }
 
-        public Evento(String lug, String descript, Usuario u, DateTime fechaIni, DateTime fechaIniPrendas, DateTime fechaFinPrenda, String nombre, int tipoEvent)
+        public Evento(String lug, String descript, Usuario u, DateTime fechaIni, DateTime fechaIniPrendas, DateTime fechaFinPrenda, int tipoEvent)
         {
             lugar = lug;
             descripcion = descript;
@@ -57,8 +57,7 @@ namespace QueMePongo
             tipoEvento = tipoEvent;
             Scheduler sched = Scheduler.getInstance();
             sched.run();
-            nombre = nombre + descript;
-            sched.crearSchedulerEvento(nombre, tipoEvent, fechaIni, this);
+            sched.crearSchedulerEvento(descript, tipoEvent, fechaIni, this);
         }
 
         public Evento() { }

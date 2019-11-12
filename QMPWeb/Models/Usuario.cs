@@ -76,9 +76,9 @@ namespace QueMePongo
 
         public void crearEvento(DateTime fechaIni, DateTime fechaFinP, DateTime fechaIniP, String lugar, String descripcion, int tipoEvento)
         {
-            Evento even = new Evento(lugar, descripcion, this, fechaIni, fechaIniP, fechaFinP, usuario, tipoEvento);
-            eventos.Add(even);
-            Console.WriteLine("Se ha creado el evento");
+            // Evento even = new Evento(lugar, descripcion, this, fechaIni, fechaIniP, fechaFinP, tipoEvento);
+            // eventos.Add(even);
+            // Console.WriteLine("Se ha creado el evento");
         }
 
         public void eliminarEvento(String lugar)

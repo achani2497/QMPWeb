@@ -36,20 +36,21 @@ namespace QMPWeb.Controllers
         {
 
             DB db = new DB();
-            Evento evento = new Evento();
+            UsuarioRepository userDAO = new UsuarioRepository();
+            Usuario usuario = new Usuario();
 
             int idUser = Convert.ToInt32(form["idUsuario"]);
+            DateTime fechaInicioPrendas = Convert.ToDateTime(form["idFechaIni"]);
+            DateTime fechaFinPrendas = Convert.ToDateTime(form["idFechaFin"]);
+            DateTime fechaDeRecordatorio = fechaInicioPrendas.AddHours(-1 * Convert.ToInt32(form["idRecord"]));
+            int tipoEvento = Convert.ToInt32(form["frecuencia"]);
 
-            evento.descripcion = form["despripcionEvento"];
-            evento.fechaInicioPrendas = Convert.ToDateTime(form["idFechaIni"]);
-            evento.fechaFinPrendas = Convert.ToDateTime(form["idFechaFin"]);
-            evento.fechaNotificacion = evento.fechaInicioPrendas.AddHours(-1 * Convert.ToInt32(form["idRecord"])); //CHEQUEAR
-            evento.id_usuario = idUser;
-            evento.lugar = form["idLugar"];
-            evento.tipoEvento = 1; //------------------------------------------TIPO DE EVENTO????????????????????
+            usuario = userDAO.BuscarUsuarioPorId(idUser);
 
-            EventoRepository eventoRepo = new EventoRepository();
-            eventoRepo.Insert(evento, db);
+            Evento evento = new Evento(form["idLugar"], form["despripcionEvento"], usuario, fechaDeRecordatorio, fechaInicioPrendas, fechaFinPrendas, tipoEvento);
+
+            EventoRepository eventoDAO = new EventoRepository();
+            eventoDAO.Insert(evento, db);
 
             TempData["SuccessMessage"] = "Evento creado con exito! :D";
 
@@ -74,14 +75,51 @@ namespace QMPWeb.Controllers
 
         }
 
-        /*
-        [HttpPost]
-        public IActionResult EditarGuardarropa(IFormCollection form)
-        {
+        public IActionResult CargarEventoParaEditar(int idEvento, int idUsuario){
 
+            EventoRepository eventoDAO = new EventoRepository();
+            Evento evento = eventoDAO.BuscarEventoPorId(idEvento);
+
+            ViewBag.Id = idUsuario;
+            ViewBag.Evento = evento;
+            switch(evento.tipoEvento){
+                case 0:
+                    ViewBag.TipoDeEvento = "Evento único";
+                    break;
+                case 1:
+                    ViewBag.TipoDeEvento = "Todos los días";
+                    break;
+                case 2:
+                    ViewBag.TipoDeEvento = "Una vez por semana";
+                    break;
+                case 3:
+                    ViewBag.TipoDeEvento = "Una vez por mes";
+                    break;
+                case 4:
+                    ViewBag.TipoDeEvento = "Una vez por año";
+                    break;
+                default:
+                    ViewBag.TipoDeEvento = "No seleccionaste una opcion";
+                    break;
+            }
+
+            return View("Evento");
 
         }
-        */
+
+        public IActionResult ActualizarEvento(IFormCollection form){
+
+            EventoRepository eventoDAO = new EventoRepository();
+
+            string idUsuarioString = form["idUsuario"];
+            int idUser = Convert.ToInt32(idUsuarioString);
+
+            eventoDAO.Update(form);
+
+            TempData["SuccessMessage"] = "Evento actualizado correctamente! :D";
+            return RedirectToAction("Index", "Eventos", new {idUsuario = idUser});
+
+        }
 
     }
 }
