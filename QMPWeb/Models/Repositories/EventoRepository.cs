@@ -1,11 +1,12 @@
 ﻿using System;
-using QueMePongo;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+using QueMePongo;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
-    public class EventoRepository
+public class EventoRepository
     {
         public void Insert(Evento evento, DB context)
         {
@@ -14,12 +15,12 @@ using Microsoft.AspNetCore.Mvc;
             Console.WriteLine($"\nEvento {evento.id_evento} - {evento.descripcion} creado!");
         }
 
-        public void Update(Evento evento, DB context)
+    public void Update(Evento evento, DB context)
         {
 
         }
 
-        public void Delete(int eventoId)
+    public void Delete(int eventoId)
         {
             DB db = new DB();
             db.Database.ExecuteSqlRaw($"delete from evento Where id_evento = '{eventoId}'");

@@ -14,7 +14,13 @@ namespace QMPWeb.Controllers
     {
         public IActionResult Index(int idUsuario)
         {
+                
                if(idUsuario != 0){
+                
+                var userRepository = new UsuarioRepository();
+                DB db = new DB();
+
+                ViewBag.Eventos = db.eventos.FromSqlRaw($"Select * From eventos Where id_usuario = '{idUsuario}'").ToList();
 
                 ViewBag.Id = idUsuario;
 
@@ -24,7 +30,7 @@ namespace QMPWeb.Controllers
             }
         }
 
-        
+
         [HttpPost]
         public IActionResult CrearEvento(IFormCollection form)
         {
@@ -40,6 +46,7 @@ namespace QMPWeb.Controllers
             evento.fechaNotificacion = evento.fechaInicioPrendas.AddHours(-1 * Convert.ToInt32(form["idRecord"])); //CHEQUEAR
             evento.id_usuario = idUsuario;
             evento.lugar = form["idLugar"];
+            evento.tipoEvento = 1; //------------------------------------------TIPO DE EVENTO????????????????????
             // AGREGAR USER?
 
             EventoRepository eventoRepo = new EventoRepository();
