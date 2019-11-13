@@ -6,7 +6,7 @@
     <div class="row mt-4">
 
         <div class="col-md-8 col-sm-12 mx-auto mt-4 mb-4">
-            <form asp-controller="Prendas" asp-action="ActualizarPrenda" method="POST">
+            <form asp-controller="Prendas" asp-action="ActualizarPrenda" method="POST" enctype="multipart/form-data">
                 <input type="hidden" value="@ViewBag.Id" name="idUsuario">
                 <input type="hidden" value="@ViewBag.Prenda.id_prenda" name="idPrenda">
                 <div class="card bg-default box-shadow pb-0">

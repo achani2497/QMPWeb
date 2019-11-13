@@ -129,9 +129,7 @@ namespace QMPWeb.Controllers
             prenda.colorSecundario = form["colorSecundario"];
 
             if(imagenNueva != null){
-                prenda.urlImagen = form["imagenNueva"];
-            } else {
-                prenda.urlImagen = form["imagenVieja"];
+                prenda.urlImagen = prenda.nombreUnicoImagen(imagenNueva, hostingEnviroment);
             }
 
             if(idTipoPrendaNuevoString != "-"){

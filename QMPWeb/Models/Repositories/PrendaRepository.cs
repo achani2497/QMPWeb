@@ -32,10 +32,6 @@ namespace queMePongo.Repositories
                 s.calificacion = prenda.calificacion;
                 s.cantCalif = prenda.cantCalif;
 
-                if(!File.Exists("~/uploads/"+prenda.urlImagen)){
-                    
-                }
-
                 context.prendas.Update(prenda);
                 context.SaveChanges();
 
