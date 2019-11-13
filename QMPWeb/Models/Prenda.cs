@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using queMePongo.Repositories;
 
 namespace QueMePongo
 {
@@ -130,5 +131,30 @@ namespace QueMePongo
             return nombreUnico;
 
         }
+
+        public void crearPrendasVacias(int idGuardarropa, int idUsuario)
+        {
+
+            DB db = new DB();
+            PrendaRepository prendaDAO = new PrendaRepository();
+
+            for (int i = 0; i < 5; i++)
+            {
+                Prenda prendaNueva = new Prenda();
+
+                //prendaNueva.colorPrincipal = form["colorPrincipal"];
+                //prendaNueva.colorSecundario = form["colorSecundario"];
+
+                prendaNueva.id_tela = 27;
+                prendaNueva.tipoPrenda = 56 + i;
+                prendaNueva.id_duenio = idUsuario;
+
+                //prendaNueva.urlImagen = prendaNueva.nombreUnicoImagen(imagenDePrenda, hostingEnviroment);
+
+                prendaDAO.CrearPrenda(prendaNueva, db, idGuardarropa);
+            }
+
+        }
+
     }
 }

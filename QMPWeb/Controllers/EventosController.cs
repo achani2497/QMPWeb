@@ -128,7 +128,7 @@ namespace QMPWeb.Controllers
 
             Evento evento = eventoDAO.BuscarEventoPorId(idEvento);
 
-            ViewBag.Sugerencias = evento.getAtuendos(evento, idUsuario);
+            ViewBag.Sugerencias = evento.getAtuendos(idUsuario);
             ViewBag.Evento = evento;
             ViewBag.Id = idUsuario;
 

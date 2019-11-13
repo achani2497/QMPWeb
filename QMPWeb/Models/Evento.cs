@@ -82,7 +82,7 @@ namespace QueMePongo
             }
         }
 
-        public List<Atuendo> getAtuendos(Evento evento, int idUsuario)
+        public List<Atuendo> getAtuendos(int idUsuario)
         {
             DB db = new DB();
             guardarropaXusuarioRepository guardarropaDAO = new guardarropaXusuarioRepository();
@@ -94,7 +94,7 @@ namespace QueMePongo
             List<List<Prenda>> prendas = new List<List<Prenda>>();
             foreach (guardarropaXusuarioRepository g in guardarropasParciales) { prendas.Add(guardarropaREP.PrendasDelGuardarropas(g.id_guardarropa, db)); }
             foreach (List<Prenda> p in prendas) { foreach (Prenda pr in p) { pr.tipo = tpr.TraerTipoDePrendaPorId(pr.tipoPrenda); } }
-            foreach (List<Prenda> p in prendas) { atuendos.AddRange(generador.ejecutarGenerar(20, p, evento)); }
+            foreach (List<Prenda> p in prendas) { atuendos.AddRange(generador.ejecutarGenerar(20, p, this)); }
             return atuendos;
         }
 
