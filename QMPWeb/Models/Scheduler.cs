@@ -134,7 +134,7 @@ namespace QueMePongo
             String nombre = context.JobDetail.Key.ToString();
             nombre = nombre.Substring(13, nombre.Length - 13);
             Evento even = (Evento)context.JobDetail.JobDataMap.Get(nombre);
-            // even.ejecutarEvento();
+            even.ejecutarEvento();
         }
 
     }

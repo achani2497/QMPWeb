@@ -55,23 +55,22 @@ namespace QueMePongo
 
         public Usuario() { }
 
-        // public List<Atuendo> ObtenerSugerencias(Evento even)
-        // {
-        //     Apis api = new Apis();
-        //     int temperatura = 20;//api.solicitarClima(even.lugar);
-        //     List<Atuendo> sugerencias = new List<Atuendo>();
-        //     foreach (Guardarropa guardarropa in guardarropas)
-        //     {
-        //         foreach (Atuendo atuendo in guardarropa.generarSugerencias(temperatura, even))
-        //         {
-        //             sugerencias.Add(atuendo);
-        //         }
+        public List<Atuendo> ObtenerSugerencias(Evento even)
+        {
+            Apis api = new Apis();
+            int temperatura = 20;//api.solicitarClima(even.lugar);
+            List<Atuendo> sugerencias = new List<Atuendo>();
+            foreach (Guardarropa guardarropa in guardarropas)
+            {
+                foreach (Atuendo atuendo in guardarropa.generarSugerencias(temperatura, even))
+                {
+                    sugerencias.Add(atuendo);
+                }
 
-        //     }
-        //     sugerencias = sugerencias.OrderBy(s1 => s1.getPuntuacion()).ToList();
-        //     mostrarAtuendos(sugerencias);
-        //     return sugerencias;
-        // }
+            }
+            sugerencias = sugerencias.OrderBy(s1 => s1.getPuntuacion()).ToList();
+            return sugerencias;
+        }
 
 
         public void crearEvento(DateTime fechaIni, DateTime fechaFinP, DateTime fechaIniP, String lugar, String descripcion, int tipoEvento)
@@ -140,35 +139,35 @@ namespace QueMePongo
 
         }
 
-        // public void elegirAtuendo(Evento even)
-        // {
-        //     List<Atuendo> atuendos = new List<Atuendo>();
-        //     atuendos = this.ObtenerSugerencias(even);
+        public void elegirAtuendo(Evento even)
+        {
+            List<Atuendo> atuendos = new List<Atuendo>();
+            atuendos = this.ObtenerSugerencias(even);
 
 
-        //     /*
-        //     Console.WriteLine("Indique el numero de sugerencia que quiere seleccionar:");
+            /*
+            Console.WriteLine("Indique el numero de sugerencia que quiere seleccionar:");
 
-        //     String sugerenciaElegida = Console.ReadLine();
+            String sugerenciaElegida = Console.ReadLine();
 
-        //     int opcion = int.Parse(sugerenciaElegida);
+            int opcion = int.Parse(sugerenciaElegida);
 
-        //     if (atuendos[opcion].validarAtuendo(even))
-        //     {
-        //         foreach (Prenda p in atuendos[opcion].prendas)
-        //         {
-        //             p.eventos.Add(even);
-        //             Console.WriteLine("Ha elegido su atuendo Correctamente");
-        //             calificarAtuendo(atuendos[opcion]);
-        //         }
-        //     }
-        //     else
-        //     {
-        //         Console.WriteLine("El atuendo que eligio ya esta en uso en ese periodo de tiempo, elija otro");
-        //         this.elegirAtuendo(even);
-        //     }*/
+            if (atuendos[opcion].validarAtuendo(even))
+            {
+                foreach (Prenda p in atuendos[opcion].prendas)
+                {
+                    p.eventos.Add(even);
+                    Console.WriteLine("Ha elegido su atuendo Correctamente");
+                    calificarAtuendo(atuendos[opcion]);
+                }
+            }
+            else
+            {
+                Console.WriteLine("El atuendo que eligio ya esta en uso en ese periodo de tiempo, elija otro");
+                this.elegirAtuendo(even);
+            }*/
 
-        // }
+        }
 
         public void calificarAtuendo(Atuendo atuendo) // no se verifica datos ingresados ya que proximamente se hara con una interfaz
         {

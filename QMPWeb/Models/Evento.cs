@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net.Mail;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -62,9 +63,12 @@ namespace QueMePongo
 
         public Evento() { }
 
-        public void ejecutarEvento()
+        public void ejecutarEvento(string mailDeUsuario)
         {
-            // user.elegirAtuendo(this);
+            string EmailDeOrigen = "alejandro.chani24@gmail.com";
+
+            MailMessage mail = new MailMessage(EmailDeOrigen, mailDeUsuario, "Sugerencias listas para uno de tus eventos!", "Ya armamos las sugerencias de atuendos para el evento: "+this.descripcion);
+
         }
 
     }
