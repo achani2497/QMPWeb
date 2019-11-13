@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using queMePongo.Repositories;
 
 namespace QueMePongo
 {
@@ -82,6 +83,22 @@ namespace QueMePongo
             } catch(Exception e) {
                 Console.WriteLine(e.Message);
             }
+        }
+
+        public List<Atuendo> getAtuendos(Evento evento, int idUsuario)
+        {
+            DB db = new DB();
+            guardarropaXusuarioRepository guardarropaDAO = new guardarropaXusuarioRepository();
+            GuardarropaRepository guardarropaREP = new GuardarropaRepository();
+            GenerarSugerencias generador = new GenerarSugerencias();
+            TipoPrendaRepository tpr = new TipoPrendaRepository();
+            List<Atuendo> atuendos = new List<Atuendo>();
+            List<guardarropaXusuarioRepository> guardarropasParciales = guardarropaDAO.listarGuardarropasDeUsuario(idUsuario);
+            List<List<Prenda>> prendas = new List<List<Prenda>>();
+            foreach (guardarropaXusuarioRepository g in guardarropasParciales) { prendas.Add(guardarropaREP.PrendasDelGuardarropas(g.id_guardarropa, db)); }
+            foreach (List<Prenda> p in prendas) { foreach (Prenda pr in p) { pr.tipo = tpr.TraerTipoDePrendaPorId(pr.tipoPrenda); } }
+            foreach (List<Prenda> p in prendas) { atuendos.AddRange(generador.ejecutarGenerar(20, p, evento)); }                             // TEMPERATURA????????????????????????????????????????
+            return atuendos;
         }
 
     }

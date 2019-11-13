@@ -16,7 +16,7 @@ namespace QMPWeb.Controllers
         {
                 
             if(idUsuario != 0){
-                
+
 
                 var userRepository = new UsuarioRepository();
                 DB db = new DB();
@@ -122,19 +122,7 @@ namespace QMPWeb.Controllers
 
         }
 
-        public List<Atuendo> getAtuendos(Evento evento)
-        {
-            DB db = new DB();
-            guardarropaXusuarioRepository guardarropaDAO = new guardarropaXusuarioRepository();
-            GuardarropaRepository guardarropaREP = new GuardarropaRepository();
-            GenerarSugerencias generador = new GenerarSugerencias();
-            List<Atuendo> atuendos = new List<Atuendo>();
-            List<guardarropaXusuarioRepository> guardarropasParciales = guardarropaDAO.listarGuardarropasDeUsuario(idUsuario);
-            List<List<Prenda>> prendas = new List<List<Prenda>>();
-            foreach (guardarropaXusuarioRepository g in guardarropasParciales) { prendas.Add(guardarropaREP.PrendasDelGuardarropas(g.id_guardarropa, db)); }
-            foreach (List<Prenda> p in prendas) { atuendos.AddRange(generador.ejecutarGenerar(20, p, evento)) } // TEMPERATURA????????????????????????????????????????
-            return atuendos;
-        }
+        
 
     }
 }
