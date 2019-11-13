@@ -29,7 +29,6 @@ namespace QueMePongo
             //ITrigger triggerComp = TriggerBuilder.Create().WithIdentity(nombre, "grupoEjemplo").StartNow()
             //     .WithSimpleSchedule(x => x.WithIntervalInSeconds(5).RepeatForever()).Build();
             ITrigger triggerComp = crearTrigger(tipoEvento, fechaIni, nombre);
-            this.agregarTask(jobComp, triggerComp);
         }
 
         private ITrigger crearTrigger(int tipoEvento, DateTime fechaIni, String nombre)

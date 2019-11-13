@@ -93,7 +93,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                                 </div>
-                                                <input type="text" class="form-control" name="usuario" asp-for="usuario" id="usuario" placeholder="Nombre de Usuario">
+                                                <input type="text" class="form-control" name="usuario" asp-for="usuario" id="usuario" placeholder="Nombre de Usuario" required>
                                             </div>
                                         </div>
                                         <div class="form-group text-center">
@@ -101,7 +101,15 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-key"></i></span>
                                                 </div>
-                                                <input type="text" class="form-control" name="contrasenia" id="contrasenia" asp-for="contrasenia" placeholder="Contraseña (mínimo 8 caracteres)">
+                                                <input type="password" class="form-control" name="contrasenia" id="contrasenia" asp-for="contrasenia" placeholder="Contraseña (mínimo 8 caracteres)" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-at"></i></span>
+                                                </div>
+                                                <input type="mail" class="form-control" name="mail" id="mail" asp-for="mail" placeholder="mail@example.com">
                                             </div>
                                         </div>
                                     </div>

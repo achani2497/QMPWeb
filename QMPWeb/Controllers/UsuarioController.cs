@@ -27,7 +27,7 @@ namespace QMPWeb.Controllers
         {
             var helper = new Helper();
 
-            helper.crearUsuario(form["usuario"], form["contrasenia"]);
+            helper.crearUsuario(form["usuario"], form["contrasenia"], form["mail"]);
 
             return RedirectToAction("Index", "Home");
 

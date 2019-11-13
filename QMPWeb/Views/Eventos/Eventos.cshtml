@@ -55,8 +55,9 @@
                                         <li><span>Fecha notificacion:</span> @evento.fechaNotificacion </li>
                                         <li><span>Lugar:</span> @evento.lugar </li>
                                     </ul>
-                                    <button type="button" class="btn btn-warning btn-block btn-sm letra-de-titulo" data-target="#atuendos" data-toggle="modal"> <i class="fas fa-user-tie"></i> Elegir atuendo</button>
-                                    @Html.ActionLink("Editar evento", "CargarEventoParaEditar", "Eventos", new { idEvento = evento.id_evento, idUsuario = ViewBag.Id }, new { @class = "btn btn-primary btn-block btn-sm mb-2 letra-de-titulo" })
+                                    <!-- <button type="button" class="btn btn-warning btn-block btn-sm letra-de-titulo" data-target="#atuendos" data-toggle="modal"> <i class="fas fa-user-tie"></i> Elegir atuendo</button> -->
+									@Html.ActionLink("Elegir atuendo", "CargarAtuendosParaElegir", "Eventos", new {idEvento = evento.id_evento, idUsuario = ViewBag.Id}, new { @class = "btn btn-warning btn-block btn-sm mb-2 letra-de-titulo"})
+                                    @Html.ActionLink("Editar evento", "CargarEventoParaEditar", "Eventos", new { idEvento = evento.id_evento, idUsuario = ViewBag.Id }, new { @class = "btn btn-primary btn-block btn-sm mb-2 letra-de-titulo"})
                                     <form asp-controller="Eventos" asp-action="EliminarEvento" method="POST">
                                         <input type="hidden" name="idUsuario" value="@ViewBag.Id">
                                         <input type="hidden" name="idEvento" value="@evento.id_evento">
@@ -78,40 +79,6 @@
 
         </div>
 
-        <!-- MODAL DE LOS ATUENDOS PARA ELEGIR POR EVENTO -->
-        <div class="modal fade" tabindex="-1" id="atuendos">
-            <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
-                <div class="modal-content bg-default">
-                    <div class="modal-header">
-                        <h1 class="letra-de-titulo letra-blanca letra-con-sombra">Elegí tu atuendo</h1>
-                        <button class="close" data-dismiss="modal">
-                            <span>&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-
-                            <!-- DIV QUE HAY QUE LOOPEAR -->
-                            <div class="col-sm-6 col-md-6 col-lg-4 mb-2">
-                                <div class="card black-card">
-                                    <div class="card-header">
-                                        <h5 class="letra-de-titulo">Nombre del atuendo</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <h1>Aca tengo que poner las partes del atuendo</h1>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-success btn-block btn-sm"><i class="fas fa-check"></i> Elegir atuendo</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- FORMULARIO DE CREACION DE EVENTO -->
         <div class="modal fade" id="eventoForm" tabindex="-1" role="dialog" aria-labelledby="eventoForm" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -129,19 +96,19 @@
                                 <div class="col-md-6 col-sm-12 col-lg-12">
                                     <div class="form-group">
                                         <label>Evento:</label>
-                                        <input type="text" class="form-control" name="despripcionEvento" placeholder="Ej: Charla de Diseño de Sistemas">
+                                        <input type="text" class="form-control" name="despripcionEvento" placeholder="Ej: Charla de Diseño de Sistemas" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Fecha y hora de inicio:</label>
-                                        <input type="datetime-local" class="form-control" name="idFechaIni">
+                                        <input type="datetime-local" class="form-control" name="idFechaIni" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Fecha y hora de fin:</label>
-                                        <input type="datetime-local" class="form-control" name="idFechaFin">
+                                        <input type="datetime-local" class="form-control" name="idFechaFin" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Recordarme el evento:</label>
-                                        <select class="custom-select" name="idRecord">
+                                        <select class="custom-select" name="idRecord" required>
                                             <option selected>Seleccioná el momento</option>
                                             <option value="1">1 hora antes</option>
                                             <option value="24">1 dia antes</option>
@@ -150,7 +117,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="letra-de-titulo">¿Con qué frecuencia se repite el evento?</label>
-                                        <select name="frecuencia" id="frecuencia" class="custom-select">
+                                        <select name="frecuencia" id="frecuencia" class="custom-select" required>
                                             <option value="-">Seleccioná la frecuencia del evento</option>
                                             <option value="0">Evento único</option>
                                             <option value="1">Todos los dias</option>
@@ -161,7 +128,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Lugar:</label>
-                                        <input type="text" class="form-control" name="idLugar" placeholder="Ej: UTN - Cede Medrano">
+                                        <input type="text" class="form-control" name="idLugar" placeholder="Ej: UTN - Cede Medrano" required>
                                     </div>
                                 </div>
                             </div>

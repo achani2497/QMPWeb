@@ -50,7 +50,7 @@
                     </div>
                 }
             } else {
-                <div class="container">
+                <div class="container-fluid">
                     <div class="col-lg-12 alert alert-danger alert-dismissible fade show mt-4 text-center">
                         <b> Todavía no tenes prendas cargadas :( </b>
                     </div>
@@ -74,31 +74,31 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Color principal</label>
-                                <input type="text" class="form-control" name="colorPrincipal">
+                                <input type="text" class="form-control" name="colorPrincipal" required>
                             </div>
                             <div class="form-group">
                                 <label>Color secundario</label>
-                                <input type="text" class="form-control" name="colorSecundario">
+                                <input type="text" class="form-control" name="colorSecundario" required>
                             </div>
                             <!-- LOS TRES SELECTs LOs RELLENO CON JQUERY -->
                             <div class="form-group">
                                 <label>Tipo de prenda</label>
-                                <select class="custom-select" id="tiposDePrenda" name="tipoDePrenda">
+                                <select class="custom-select" id="tiposDePrenda" name="tipoDePrenda" required>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Tipo de tela</label>
-                                <select class="custom-select" id="tiposDeTela" name="tipoDeTela">
+                                <select class="custom-select" id="tiposDeTela" name="tipoDeTela" required>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Guardarropas en el que lo queres guardar</label>
-                                <select class="custom-select" id="guardarropasDelUsuario" name="idGuardarropa"> 
+                                <select class="custom-select" id="guardarropasDelUsuario" name="idGuardarropa" required> 
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Subí una imagen de la prenda</label>
-                                <input type="file" class="form-control-file" name="imagenDePrenda" multiple="false">
+                                <input type="file" class="form-control-file" name="imagenDePrenda" multiple="false" required>
                             </div>
                         </div>
                         <div class="modal-footer">

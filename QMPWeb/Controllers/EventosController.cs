@@ -122,7 +122,19 @@ namespace QMPWeb.Controllers
 
         }
 
-        
+        public IActionResult CargarAtuendosParaElegir(int idEvento, int idUsuario){
+            
+            EventoRepository eventoDAO = new EventoRepository();
+
+            Evento evento = eventoDAO.BuscarEventoPorId(idEvento);
+
+            ViewBag.Sugerencias = evento.getAtuendos(evento, idUsuario);
+            ViewBag.Evento = evento;
+            ViewBag.Id = idUsuario;
+
+            return View("SugerenciasParaEvento");
+
+        }
 
     }
 }

@@ -35,7 +35,7 @@ namespace queMePongo.Repositories
 
             DB db = new DB();
 
-            return db.tipoprendas.ToList();
+            return db.tipoprendas.Where(tipoPrenda => !tipoPrenda.descripcion.StartsWith("Sin")).ToList();
 
         }
 

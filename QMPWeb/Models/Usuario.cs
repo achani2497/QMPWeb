@@ -41,13 +41,13 @@ namespace QueMePongo
         [NotMapped]
         public TipoUsuario tipoUsuario { get; set; }
 
-        public Usuario(String user, TipoUsuario tu, String pass)
+        public Usuario(String user, TipoUsuario tu, String pass, String email)
         {
             usuario = user;
             tipoUsuario = tu;
             tipoDeUsuario = tu.Tipo;
             contrasenia = pass;
-
+            mail = email;
         }
 
         public void modificarTipo(TipoUsuario tu)

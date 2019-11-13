@@ -67,9 +67,7 @@ namespace QueMePongo
         public void ejecutarEvento(string mailDeUsuario)
         {
             try{
-                string EmailDeOrigen = "quemepongofsoc@gmail.com";
-
-                MailMessage mail = new MailMessage(EmailDeOrigen, mailDeUsuario, "Sugerencias listas para uno de tus eventos!", "Ya armamos las sugerencias de atuendos para el evento: "+this.descripcion);
+                MailMessage mail = new MailMessage("quemepongofsoc@gmail.com", mailDeUsuario, "Sugerencias listas para el evento:"+this.descripcion+"!", "Ya armamos las sugerencias de atuendos para el evento: "+this.descripcion);
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
                 smtpClient.EnableSsl = true;
                 smtpClient.UseDefaultCredentials = false;
@@ -97,7 +95,7 @@ namespace QueMePongo
             List<List<Prenda>> prendas = new List<List<Prenda>>();
             foreach (guardarropaXusuarioRepository g in guardarropasParciales) { prendas.Add(guardarropaREP.PrendasDelGuardarropas(g.id_guardarropa, db)); }
             foreach (List<Prenda> p in prendas) { foreach (Prenda pr in p) { pr.tipo = tpr.TraerTipoDePrendaPorId(pr.tipoPrenda); } }
-            foreach (List<Prenda> p in prendas) { atuendos.AddRange(generador.ejecutarGenerar(20, p, evento)); }                             // TEMPERATURA????????????????????????????????????????
+            foreach (List<Prenda> p in prendas) { atuendos.AddRange(generador.ejecutarGenerar(20, p, evento)); }
             return atuendos;
         }
 

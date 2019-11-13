@@ -18,11 +18,11 @@ namespace QueMePongo
         Gratuito gratuito = new Gratuito();
         Premium premium = new Premium();
 
-        public Usuario crearUsuario(String nombre, String contrasenia)
+        public Usuario crearUsuario(String nombre, String contrasenia, String mail)
         {
             DB context = new DB();
             UsuarioRepository usr = new UsuarioRepository();
-            Usuario value = new Usuario(nombre, gratuito, contrasenia);
+            Usuario value = new Usuario(nombre, gratuito, contrasenia, mail);
             usr.Insert(value, context);
             usuarios.Add(value);
             return value;

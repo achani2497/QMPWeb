@@ -16,9 +16,9 @@ function cargarSelectsParaCreacionDePrenda(idUsuario){
     $('#tiposDeTela').empty();
     $('#tiposDePrenda').empty();
 
-    $('#guardarropasDelUsuario').append('<option selected>Seleccioná algún guardarropa</option>');
-    $('#tiposDePrenda').append('<option selected>Seleccioná el tipo de prenda</option>');
-    $('#tiposDeTela').append('<option selected>Seleccioná el tipo de tela de la prenda</option>');
+    $('#guardarropasDelUsuario').append('<option>Seleccioná algún guardarropa</option>');
+    $('#tiposDePrenda').append('<option>Seleccioná el tipo de prenda</option>');
+    $('#tiposDeTela').append('<option>Seleccioná el tipo de tela de la prenda</option>');
 
     $.ajax({
         type: 'POST',

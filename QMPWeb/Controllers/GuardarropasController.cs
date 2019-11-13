@@ -38,15 +38,22 @@ namespace QMPWeb.Controllers
 
             int idUser = Convert.ToInt32(form["idUsuario"]);
 
-            guardarropa.nombreGuardarropas = form["nombreGuardarropa"];
-            guardarropa.id_duenio = idUser;
+            if(form["nombreGuardarropa"] != ""){
+                guardarropa.nombreGuardarropas = form["nombreGuardarropa"];
+                guardarropa.id_duenio = idUser;
 
-            GuardarropaRepository guardarropaRepo = new GuardarropaRepository();
-            guardarropaRepo.Create(guardarropa, db, idUser);
+                GuardarropaRepository guardarropaRepo = new GuardarropaRepository();
+                guardarropaRepo.Create(guardarropa, db, idUser);
 
-            TempData["SuccessMessage"] = "Guardarropa "+guardarropa.nombreGuardarropas+" creado con exito!";
+                TempData["SuccessMessage"] = "Guardarropa "+guardarropa.nombreGuardarropas+" creado con exito!";
+                return RedirectToAction("Index", "Guardarropas", new {idUsuario = idUser});
+            } else {
 
-            return RedirectToAction("Index", "Guardarropas", new {idUsuario = idUser});
+                TempData["ErrorMessage"] = "Tenes que ingresar un nombre válido para crear un guardarropa";
+                return RedirectToAction("Index", "Guardarropas", new {idUsuario = idUser});
+
+            }
+
 
         }
 
