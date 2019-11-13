@@ -51,7 +51,7 @@ namespace QueMePongo
 
         private bool cumpleAbrigo(int totalAbrigo, int nivelAbrigo)
         {
-            return (totalAbrigo >= nivelAbrigo - 5 && totalAbrigo <= nivelAbrigo + 5);
+            return (totalAbrigo >= nivelAbrigo - 5 || totalAbrigo <= nivelAbrigo + 5);
         }
 
         private int queNivelDeAbrigoNecesito(int temp)

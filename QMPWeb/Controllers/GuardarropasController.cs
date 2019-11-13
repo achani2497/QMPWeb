@@ -45,6 +45,9 @@ namespace QMPWeb.Controllers
                 GuardarropaRepository guardarropaRepo = new GuardarropaRepository();
                 guardarropaRepo.Create(guardarropa, db, idUser);
 
+                Prenda p = new Prenda();
+                p.crearPrendasVacias(guardarropa.id_guardarropa,idUser);
+
                 TempData["SuccessMessage"] = "Guardarropa "+guardarropa.nombreGuardarropas+" creado con exito!";
                 return RedirectToAction("Index", "Guardarropas", new {idUsuario = idUser});
             } else {
