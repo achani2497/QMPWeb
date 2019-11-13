@@ -65,10 +65,23 @@ namespace QueMePongo
 
         public void ejecutarEvento(string mailDeUsuario)
         {
-            string EmailDeOrigen = "alejandro.chani24@gmail.com";
+            try{
+                string EmailDeOrigen = "quemepongofsoc@gmail.com";
 
-            MailMessage mail = new MailMessage(EmailDeOrigen, mailDeUsuario, "Sugerencias listas para uno de tus eventos!", "Ya armamos las sugerencias de atuendos para el evento: "+this.descripcion);
+                MailMessage mail = new MailMessage(EmailDeOrigen, mailDeUsuario, "Sugerencias listas para uno de tus eventos!", "Ya armamos las sugerencias de atuendos para el evento: "+this.descripcion);
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+                smtpClient.EnableSsl = true;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Host = "smtp.gmail.com";
+                smtpClient.Port = 587;
+                smtpClient.Credentials = new System.Net.NetworkCredential("quemepongofsoc@gmail.com", "asd123asd456");
+                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtpClient.Send(mail);
 
+                smtpClient.Dispose();
+            } catch(Exception e) {
+                Console.WriteLine(e.Message);
+            }
         }
 
     }

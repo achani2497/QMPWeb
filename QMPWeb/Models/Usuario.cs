@@ -28,6 +28,9 @@ namespace QueMePongo
         [Column("tipodeusuario")]
         public int tipoDeUsuario { get; set; }
 
+        [Column("mail")]
+        public string mail { get; set; }
+
         [NotMapped]
         public List<Evento> eventosDeUsuario { get; set; }
 

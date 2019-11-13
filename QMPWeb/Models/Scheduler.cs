@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using Microsoft.EntityFrameworkCore;
+using Quartz;
 using Quartz.Impl;
 using System;
 using System.Collections.Generic;
@@ -134,7 +135,11 @@ namespace QueMePongo
             String nombre = context.JobDetail.Key.ToString();
             nombre = nombre.Substring(13, nombre.Length - 13);
             Evento even = (Evento)context.JobDetail.JobDataMap.Get(nombre);
-            even.ejecutarEvento();
+
+            DB db = new DB();
+            Usuario usuario = db.usuarios.FromSqlRaw($"Select * from usuarios where id_usuario = '{even.id_usuario}'").FirstOrDefault();
+
+            even.ejecutarEvento(usuario.mail);
         }
 
     }
