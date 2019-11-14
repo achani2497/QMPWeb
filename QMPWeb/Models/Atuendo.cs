@@ -1,4 +1,5 @@
-﻿using System;
+﻿using queMePongo.Repositories;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -49,6 +50,31 @@ namespace QueMePongo
                 }
             }
             return true;
+        }
+
+        public List<Atuendo> getAtuendosPorEv(int idEvento, DB context)
+        {
+            Atuendo a;
+            List<Atuendo> atuendos = new List<Atuendo>();
+            PrendaRepository pren = new PrendaRepository();
+            sugerenciaXeventoRepository sxe = new sugerenciaXeventoRepository();
+            prendaXatuendoRepository pxa = new prendaXatuendoRepository();
+            List<sugerenciaXeventoRepository> listsxe = sxe.BuscarSugerenciasPorEvento(idEvento,context);
+            foreach (sugerenciaXeventoRepository s in listsxe) 
+            {
+                a = new Atuendo();
+                a.id_atuendo = s.id_atuendo;
+
+                List<prendaXatuendoRepository> listpxa = pxa.BuscarPrendasPorSugerencias(a.id_atuendo, context);
+                foreach (prendaXatuendoRepository p in listpxa) 
+                {
+                    a.prendas.Add(pren.BuscarPrendaPorId(p.id_prenda));
+                }
+
+                atuendos.Add(a);
+            }
+
+            return atuendos;
         }
     }
 }

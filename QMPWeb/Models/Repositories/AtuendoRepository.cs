@@ -1,6 +1,7 @@
 ﻿using System;
-using QueMePongo;
 using System.Collections.Generic;
+using QueMePongo;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -14,16 +15,20 @@ namespace queMePongo.Repositories
             context.atuendos.Add(atuendo);
             context.SaveChanges();
             sugerenciaXeventoRepository gur = new sugerenciaXeventoRepository();
+            prendaXatuendoRepository par;
             gur.id_atuendo = atuendo.id_atuendo;
             gur.id_evento = even.id_evento;
             context.sugerenciaXeventoRepositories.Add(gur);
+            context.SaveChanges();
             foreach (Prenda p in atuendo.prendas)
             {
-                prendaXatuendoRepository par = new prendaXatuendoRepository();
+                par = new prendaXatuendoRepository();
                 par.id_atuendo = atuendo.id_atuendo;
                 par.id_prenda = p.id_prenda;
+                context.prendaXatuendoRepositories.Add(par);
+                context.SaveChanges();
             }
-            context.SaveChanges();
+            
         }
 
         public void Delete(int atuendoId, DB context)
@@ -39,5 +44,7 @@ namespace queMePongo.Repositories
             context.atuendos.Remove(g);
             context.SaveChanges();
         }
+
+        
     }
 }

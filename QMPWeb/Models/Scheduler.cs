@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Quartz;
 using Quartz.Impl;
+using queMePongo.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -135,9 +136,14 @@ namespace QueMePongo
             String nombre = context.JobDetail.Key.ToString();
             nombre = nombre.Substring(13, nombre.Length - 13);
             Evento even = (Evento)context.JobDetail.JobDataMap.Get(nombre);
+            AtuendoRepository atRepo = new AtuendoRepository();
 
             DB db = new DB();
             Usuario usuario = db.usuarios.FromSqlRaw($"Select * from usuarios where id_usuario = '{even.id_usuario}'").FirstOrDefault();
+
+            List<Atuendo> atuendos = even.generarAtuendos();
+
+            foreach (Atuendo a in atuendos) { atRepo.Insert(a, even, db); }
 
             even.ejecutarEvento(usuario.mail);
         }

@@ -71,6 +71,7 @@ namespace queMePongo.Repositories
 
                 // UTILIZO UNA SQLRAW PORQUE SINO NI PUEDO ELIMINAR VARIOS REGISTROS DE LA TABLA guardarropaxusuario
                 db.Database.ExecuteSqlRaw($"Delete from guardarropaxusuario Where id_guardarropa = '{idGuardarropa}'");
+                db.Database.ExecuteSqlRaw($"DELETE FROM prendas WHERE id_prenda IN(SELECT id_prenda FROM guardarropaxprenda where id_guardarropa = '{idGuardarropa}')");
                 db.guardarropas.Remove(guardarropa);
                 db.SaveChanges();
                 
