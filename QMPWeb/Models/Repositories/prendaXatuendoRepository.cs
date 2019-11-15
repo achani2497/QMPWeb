@@ -6,13 +6,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
+
 namespace queMePongo.Repositories
 {
-    [Table("prendaXatuendo")]
+    [Table("prendaxatuendo")]
     public class prendaXatuendoRepository
     {
         [Key]
-        [Column("id_prendaXatuendo")]
+        [Column("id_prendaxatuendo")]
         public int id_prendaXatuendo { get; set; }
 
         [Column("id_atuendo")]
@@ -28,5 +29,5 @@ namespace queMePongo.Repositories
         }
     }
 
-    
+
 }

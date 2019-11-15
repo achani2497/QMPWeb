@@ -57,6 +57,7 @@ namespace QueMePongo
             Atuendo a;
             List<Atuendo> atuendos = new List<Atuendo>();
             PrendaRepository pren = new PrendaRepository();
+            TipoPrendaRepository t = new TipoPrendaRepository();
             sugerenciaXeventoRepository sxe = new sugerenciaXeventoRepository();
             prendaXatuendoRepository pxa = new prendaXatuendoRepository();
             List<sugerenciaXeventoRepository> listsxe = sxe.BuscarSugerenciasPorEvento(idEvento,context);
@@ -68,7 +69,9 @@ namespace QueMePongo
                 List<prendaXatuendoRepository> listpxa = pxa.BuscarPrendasPorSugerencias(a.id_atuendo, context);
                 foreach (prendaXatuendoRepository p in listpxa) 
                 {
-                    a.prendas.Add(pren.BuscarPrendaPorId(p.id_prenda));
+                    Prenda prenda = pren.BuscarPrendaPorId(p.id_prenda);
+                    prenda.tipo = t.TraerTipoDePrendaPorId(prenda.tipoPrenda);
+                    a.prendas.Add(prenda);
                 }
 
                 atuendos.Add(a);
