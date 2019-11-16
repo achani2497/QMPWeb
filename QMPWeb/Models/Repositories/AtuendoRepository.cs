@@ -45,6 +45,40 @@ namespace queMePongo.Repositories
             context.SaveChanges();
         }
 
-        
+        public Atuendo getAtuendosPorId(int? id, DB context)
+        {
+            Atuendo a = new Atuendo();
+            a.id_atuendo = id.GetValueOrDefault();
+
+            prendaXatuendoRepository pxa = new prendaXatuendoRepository();
+            PrendaRepository pren = new PrendaRepository();
+            TipoPrendaRepository t = new TipoPrendaRepository();
+
+            List<prendaXatuendoRepository> listpxa = pxa.BuscarPrendasPorSugerencias(a.id_atuendo, context);
+            foreach (prendaXatuendoRepository p in listpxa)
+            {
+                Prenda prenda = pren.BuscarPrendaPorId(p.id_prenda);
+                prenda.tipo = t.TraerTipoDePrendaPorId(prenda.tipoPrenda);
+                a.prendas.Add(prenda);
+            }
+
+            return a;
+        }
+
+        public List<Atuendo> getAtuendosPorEv(int idEvento, DB context)
+        {
+            AtuendoRepository a = new AtuendoRepository();
+            List<Atuendo> atuendos = new List<Atuendo>();
+            sugerenciaXeventoRepository sxe = new sugerenciaXeventoRepository();
+            List<sugerenciaXeventoRepository> listsxe = sxe.BuscarSugerenciasPorEvento(idEvento, context);
+            foreach (sugerenciaXeventoRepository s in listsxe)
+            {
+                atuendos.Add(a.getAtuendosPorId(s.id_atuendo, context));
+            }
+
+            return atuendos;
+        }
+
+
     }
 }

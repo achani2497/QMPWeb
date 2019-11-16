@@ -69,10 +69,24 @@ public class EventoRepository
         }
 
     public void Delete(int eventoId)
-        {
-            DB db = new DB();
-            db.Database.ExecuteSqlRaw($"delete from eventos Where id_evento = '{eventoId}'");
-        }
+    {
+        DB db = new DB();
+        db.Database.ExecuteSqlRaw($"delete from eventos Where id_evento = '{eventoId}'");
+        db.Database.ExecuteSqlRaw($"delete from prendaxatuendo a where a.id_atuendo in (select id_atuendo from sugerenciasxevento where id_evento = '{eventoId}')");
+        db.Database.ExecuteSqlRaw($"delete from atuendos a where a.id_atuendo in (select id_atuendo from sugerenciasxevento where id_evento = '{eventoId}')");
+        db.Database.ExecuteSqlRaw($"delete from sugerenciasxevento where id_evento = '{eventoId}'");
+
+    }
+
+    public void DeleteSugerencias(int eventoId, int idAtuendoSeleccionado)
+    {
+        DB db = new DB();
+        db.Database.ExecuteSqlRaw($"delete from prendaxatuendo a where a.id_atuendo <> '{idAtuendoSeleccionado}' and a.id_atuendo in (select id_atuendo from sugerenciasxevento where id_evento = '{eventoId}')");
+        db.Database.ExecuteSqlRaw($"delete from atuendos a where a.id_atuendo <> '{idAtuendoSeleccionado}' and a.id_atuendo in (select id_atuendo from sugerenciasxevento where id_evento = '{eventoId}')");
+        db.Database.ExecuteSqlRaw($"delete from sugerenciasxevento where id_atuendo <> '{idAtuendoSeleccionado}' and id_evento = '{eventoId}'");
+
+    }
+
     public Evento BuscarEventoPorId(int idEvento){
         DB db = new DB();
 
@@ -82,6 +96,43 @@ public class EventoRepository
     
     }
 
+    public List<Evento> getEventos()
+    {
+        DB db = new DB();
+        AtuendoRepository a = new AtuendoRepository();
+
+        List<Evento> evento = db.eventos.FromSqlRaw($"Select * from eventos").ToList();
+        foreach (Evento e in evento) 
+        {
+           if (e.id_atuendo != null) e.atuendo = a.getAtuendosPorId(e.id_atuendo,db);
+        }
+
+        return evento;
+
+    }
+
+    public List<Evento> getEventosUsuario(int idUsuario)
+    {
+        DB db = new DB();
+        AtuendoRepository a = new AtuendoRepository();
+
+        List<Evento> evento = db.eventos.FromSqlRaw($"Select * from eventos where id_usuario = '{idUsuario}'").ToList();
+        foreach (Evento e in evento)
+        {
+            if (e.id_atuendo != null) e.atuendo = a.getAtuendosPorId(e.id_atuendo, db);
+        }
+
+        return evento;
+
+    }
+
+    public void elegirAtuendo(int idEvento, int idAtuendo)
+    {
+        DB db = new DB();
+
+        db.Database.ExecuteSqlRaw($"UPDATE eventos SET id_atuendo = '{idAtuendo}' WHERE id_evento = '{idEvento}'");
+    
+    }
 }
 
 

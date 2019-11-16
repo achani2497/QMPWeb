@@ -127,7 +127,7 @@ namespace QMPWeb.Controllers
             EventoRepository eventoDAO = new EventoRepository();
 
             Evento evento = eventoDAO.BuscarEventoPorId(idEvento);
-            Atuendo at = new Atuendo();
+            AtuendoRepository at = new AtuendoRepository();
             DB db = new DB();
 
             ViewBag.Sugerencias = at.getAtuendosPorEv(idEvento,db);
@@ -135,6 +135,19 @@ namespace QMPWeb.Controllers
             ViewBag.Id = idUsuario;
 
             return View("SugerenciasParaEvento");
+
+        }
+
+        public IActionResult SeleccionarAtuendo(int idEvento, int idAtuendo, int idUser)
+        {
+
+            EventoRepository eventoDAO = new EventoRepository();
+
+            eventoDAO.elegirAtuendo(idEvento, idAtuendo);
+            eventoDAO.DeleteSugerencias(idEvento, idAtuendo);
+
+            TempData["SuccessMessage"] = "Atuendo seleccionado correctamente! :D";
+            return RedirectToAction("Index", "Eventos", new { idUsuario = idUser });
 
         }
 

@@ -56,8 +56,21 @@
                                         <li><span>Lugar:</span> @evento.lugar </li>
                                     </ul>
                                     <!-- <button type="button" class="btn btn-warning btn-block btn-sm letra-de-titulo" data-target="#atuendos" data-toggle="modal"> <i class="fas fa-user-tie"></i> Elegir atuendo</button> -->
-									@Html.ActionLink("Elegir atuendo", "CargarAtuendosParaElegir", "Eventos", new {idEvento = evento.id_evento, idUsuario = ViewBag.Id}, new { @class = "btn btn-warning btn-block btn-sm mb-2 letra-de-titulo"})
-                                    @Html.ActionLink("Editar evento", "CargarEventoParaEditar", "Eventos", new { idEvento = evento.id_evento, idUsuario = ViewBag.Id }, new { @class = "btn btn-primary btn-block btn-sm mb-2 letra-de-titulo"})
+                                    @if (evento.id_atuendo == null)
+                                    {
+                                        <form asp-controller="Eventos" asp-action="CargarAtuendosParaElegir" method="POST">
+                                            <input type="hidden" name="idEvento" value="@evento.id_evento">
+                                            <input type="hidden" name="idUsuario" value="@ViewBag.Id">
+                                            <button type="submit" class="btn btn-warning btn-block btn-sm mb-2 letra-de-titulo"> <i class="far fa-trash-alt"></i> Elegir atuendo</button>
+                                        </form>
+                                        
+                                        <form asp-controller="Eventos" asp-action="CargarEventoParaEditar" method="POST">
+                                            <input type="hidden" name="idEvento" value="@evento.id_evento">
+                                            <input type="hidden" name="idUsuario" value="ViewBag.Id">
+                                            <button type="submit" class="btn btn-primary btn-block btn-sm mb-2 letra-de-titulo"> <i class="far fa-trash-alt"></i> Editar evento</button>
+                                        </form>
+                                        
+                                    }
                                     <form asp-controller="Eventos" asp-action="EliminarEvento" method="POST">
                                         <input type="hidden" name="idUsuario" value="@ViewBag.Id">
                                         <input type="hidden" name="idEvento" value="@evento.id_evento">

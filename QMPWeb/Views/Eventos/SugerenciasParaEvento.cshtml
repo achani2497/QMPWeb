@@ -29,9 +29,7 @@
                                         <img src="~/uploads/@prenda.urlImagen" alt="foto-de-prenda" width="50" height="50">
                                     }
                                 }
-                                <div class="card-body mx-auto">
-
-                                </div>
+                            @Html.ActionLink("Elegir atuendo", "SeleccionarAtuendo", "Eventos", new {idEvento = ViewBag.Evento.id_evento, idAtuendo = sugerencia.id_atuendo , idUser = ViewBag.Id}, new { @class = "btn btn-warning btn-block btn-sm mb-2 letra-de-titulo"})
                             </div>
                         </div>
                     }

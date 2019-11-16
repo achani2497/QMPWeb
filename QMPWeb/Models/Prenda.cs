@@ -44,7 +44,7 @@ namespace QueMePongo
 
         [NotMapped]
         public IFormFile imagen { get; set; }
-        public List<Evento> eventos = new List<Evento>();
+        //public List<Evento> eventos = new List<Evento>();
 
         [NotMapped]
         public virtual ICollection<Guardarropa> Guardarropas { get; set; }
@@ -95,25 +95,18 @@ namespace QueMePongo
 
         public bool validarFechas(Evento even)
         {
-            for (int i = 0; i < eventos.Count; i++)
+            EventoRepository evrepo = new EventoRepository();
+            List<Evento> eventos = evrepo.getEventosUsuario(id_duenio);
+            bool r = true;
+
+            foreach (Evento e in eventos) 
             {
-                if (even.fechaFinPrendas < eventos[i].fechaInicioPrendas)
-                {
-                    return true;
-                }
-                else
-                {
-                    if (even.fechaInicioPrendas > eventos[i].fechaFinPrendas)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                if (e.id_atuendo != null && e.atuendo.tengoPrenda(id_prenda) && even.fechaInicioPrendas < e.fechaFinPrendas) {
+                    r = false;
                 }
             }
-            return true;
+
+            return r;
         }
 
         public string nombreUnicoImagen(IFormFile imagenDePrenda, IHostingEnvironment ie){

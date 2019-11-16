@@ -30,7 +30,7 @@ namespace QueMePongo
         public String lugar { get; set; }
 
         [Column("id_atuendo")]
-        public int id_atuendo { get; set; }
+        public int? id_atuendo { get; set; }
 
         [Column("descripcion")]
         public String descripcion { get; set; }

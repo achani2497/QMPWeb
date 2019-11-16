@@ -52,32 +52,14 @@ namespace QueMePongo
             return true;
         }
 
-        public List<Atuendo> getAtuendosPorEv(int idEvento, DB context)
+        public bool tengoPrenda(int idPrenda)
         {
-            Atuendo a;
-            List<Atuendo> atuendos = new List<Atuendo>();
-            PrendaRepository pren = new PrendaRepository();
-            TipoPrendaRepository t = new TipoPrendaRepository();
-            sugerenciaXeventoRepository sxe = new sugerenciaXeventoRepository();
-            prendaXatuendoRepository pxa = new prendaXatuendoRepository();
-            List<sugerenciaXeventoRepository> listsxe = sxe.BuscarSugerenciasPorEvento(idEvento,context);
-            foreach (sugerenciaXeventoRepository s in listsxe) 
+            bool r = false;
+            foreach (Prenda p in prendas)
             {
-                a = new Atuendo();
-                a.id_atuendo = s.id_atuendo;
-
-                List<prendaXatuendoRepository> listpxa = pxa.BuscarPrendasPorSugerencias(a.id_atuendo, context);
-                foreach (prendaXatuendoRepository p in listpxa) 
-                {
-                    Prenda prenda = pren.BuscarPrendaPorId(p.id_prenda);
-                    prenda.tipo = t.TraerTipoDePrendaPorId(prenda.tipoPrenda);
-                    a.prendas.Add(prenda);
-                }
-
-                atuendos.Add(a);
+                r = r || (p.id_prenda == idPrenda);
             }
-
-            return atuendos;
+            return r;
         }
     }
 }
