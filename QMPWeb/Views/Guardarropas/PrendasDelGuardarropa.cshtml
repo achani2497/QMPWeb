@@ -32,28 +32,31 @@
             <b>Prendas del guardarropa '@ViewBag.nombreGuardarropa'</b>
         </div>
 
-        @if(Enumerable.Count(ViewBag.Prendas) > 0){
+        @if(Enumerable.Count(ViewBag.Prendas) > 5){
             foreach(var prenda in ViewBag.Prendas){
-                <div class="col-md-3 col-lg-3 col-sm-4 mb-2">
-                    <div class="card black-card">
-                        <img src="~/uploads/@prenda.urlImagen" class="img-thumbnail" alt="foto-de-prenda">
-                        <div class="card-body mx-auto">
-                            <p class="letra-de-titulo">Color principal: @prenda.colorPrincipal</p>
-                            <p class="letra-de-titulo">Color secundario: @prenda.colorSecundario</p>
-                            <form asp-controller="Guardarropas" asp-action="EliminarPrenda" method="POST">
-                                <input type="hidden" name="idUsuario" value="@ViewBag.Id">
-                                <input type="hidden" name="idPrenda" value="@prenda.id_prenda">
-                                <input type="hidden" name="idGuardarropa" value="@ViewBag.IdGuardarropa">
-                                <button type="submit" class="btn btn-danger btn-block btn-sm letra-de-titulo mt-4"><i class="far fa-trash-alt"></i> Eliminar prenda</button>
-                                @Html.ActionLink("Editar prenda", "CargarPrendaParaEditar", "Prendas", new {idPrenda = prenda.id_prenda, idUsuario = ViewBag.Id}, new {@class="btn btn-primary btn-block btn-sm mt-2 letra-de-titulo"})
-                            </form>
+                if(@prenda.colorPrincipal != null){
+                    <div class="col-md-3 col-lg-3 col-sm-4 mb-2">
+                        <div class="card black-card">
+                            <img src="~/uploads/@prenda.urlImagen" class="img-thumbnail" alt="foto-de-prenda">
+                            <div class="card-body mx-auto">
+                                <p class="letra-de-titulo">Color principal: @prenda.colorPrincipal</p>
+                                <p class="letra-de-titulo">Color secundario: @prenda.colorSecundario</p>
+                                <form asp-controller="Guardarropas" asp-action="EliminarPrenda" method="POST">
+                                    <input type="hidden" name="idUsuario" value="@ViewBag.Id">
+                                    <input type="hidden" name="idPrenda" value="@prenda.id_prenda">
+                                    <input type="hidden" name="idGuardarropa" value="@ViewBag.IdGuardarropa">
+                                    <input type="hidden" name="colorPrincipal" value="@prenda.colorPrincipal">
+                                    <button type="submit" class="btn btn-danger btn-block btn-sm letra-de-titulo mt-4"><i class="far fa-trash-alt"></i> Eliminar prenda</button>
+                                    @Html.ActionLink("Editar prenda", "CargarPrendaParaEditar", "Prendas", new {idPrenda = prenda.id_prenda, idUsuario = ViewBag.Id}, new {@class="btn btn-primary btn-block btn-sm mt-2 letra-de-titulo"})
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             }
         } else {
             <div class="container">
-                <div class="col-lg-12 alert alert-danger alert-dismissible fade show mt-4 text-center">
+                <div class="col-lg-12 alert alert-info mt-3 text-center">
                     <b> El guardarropa '@ViewBag.nombreGuardarropa' todavia no tiene prendas!</b>
                 </div>
             </div>

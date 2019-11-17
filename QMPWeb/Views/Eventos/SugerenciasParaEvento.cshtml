@@ -14,24 +14,25 @@
             @{
                 if (Enumerable.Count(ViewBag.Sugerencias) > 0)
                 {
-                    foreach (var sugerencia in ViewBag.Sugerencias)
+                    @foreach (var sugerencia in ViewBag.Sugerencias)
                     {
                         <div class="col-sm-6 col-md-6 col-lg-4 mt-4">
-                            <div class="card box-shadow black-card">
-                                <div class="card-header">
-                                    <h3 class="letra-de-titulo">@sugerencia.id_atuendo</h3>
-                                </div>
-                                @foreach (var prenda in sugerencia.prendas)
-                                {
-                                    if (prenda.tipoPrenda > 60)
+                            <div class="card box-shadow black-card text-center">
+                                <div class="card-body">
+                                    @foreach (var prenda in sugerencia.prendas)
                                     {
-                                        <p class="letra-de-titulo">@prenda.tipo.descripcion</p>
-                                        <img src="~/uploads/@prenda.urlImagen" alt="foto-de-prenda" width="50" height="50">
+                                        if (prenda.tipoPrenda > 60)
+                                        {
+                                            <p class="letra-de-titulo">@prenda.tipo.descripcion</p>
+                                            <img src="~/uploads/@prenda.urlImagen" alt="foto-de-prenda" width="50" height="50">
+                                        }
                                     }
-                                }
-                            @Html.ActionLink("Elegir atuendo", "SeleccionarAtuendo", "Eventos", new {idEvento = ViewBag.Evento.id_evento, idAtuendo = sugerencia.id_atuendo , idUser = ViewBag.Id}, new { @class = "btn btn-warning btn-block btn-sm mb-2 letra-de-titulo"})
+                                </div>
+                                <div class="card-footer">
+                                    @Html.ActionLink("Elegir atuendo", "SeleccionarAtuendo", "Eventos", new {idEvento = ViewBag.Evento.id_evento, idAtuendo = sugerencia.id_atuendo , idUser = ViewBag.Id}, new { @class = "btn btn-warning btn-block btn-sm mb-2 letra-de-titulo"})
+                                </div>
                             </div>
-                        </div>
+                        </div>  
                     }
                 }
             }
